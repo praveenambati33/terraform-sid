@@ -10,7 +10,7 @@ variables:
   - name: terraformVersion                    # <<-- Terraform version
     value: '1.2.0'
   - name: backendServiceArm                   # <<-- Service Connection Name
-    value: 'ACP-DEV'
+    value: 'p32-sit-sc'
   - name: backendAzureRmResourceGroupName     # <<-- Resource Group name to store tfstate file
     value: 'resourcegroup-tfstate'
   - name: backendAzureRmStorageAccountName    # <<-- Storage Account name to tfstate file
