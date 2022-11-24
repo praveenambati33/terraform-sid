@@ -1,0 +1,127 @@
+name: $(BuildDefinitionName)_$(date:yyyyMMdd)$(rev:.r)
+
+variables:
+  - template: variables.yaml
+
+trigger: none
+
+# Don't run against PRs
+pr: none
+
+stages :
+  - stage: validate
+    jobs:
+    - job: validate
+      continueOnError: false
+      steps:
+      - task: TerraformInstaller@0
+        displayName: 'install'
+        inputs:
+          terraformVersion: ${{ variables.terraformVersion }}
+      - task: TerraformTaskV2@2 #TerraformTaskV1@0
+        displayName: 'init'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: ${{ variables.backendServiceArm }}
+          backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+          backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+          backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+          backendAzureRmKey: '${{ variables.Application }}-${{ variables.Environment }}.tfstate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
+      - task: TerraformTaskV1@0
+        displayName: 'validate'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          
+  - stage: plan
+    dependsOn: [validate]
+    condition: succeeded('validate')
+    jobs:
+      - job: terraform_plan
+        steps:
+              - checkout: self
+              - task: TerraformInstaller@0
+                displayName: 'install'
+                inputs:
+                  terraformVersion: ${{ variables.terraformVersion }}
+              - task: TerraformTaskV2@2 #TerraformTaskV1@0
+                displayName: 'init'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: ${{ variables.backendServiceArm }}
+                  backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+                  backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+                  backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+                  backendAzureRmKey: '${{ variables.Application }}-${{ variables.Environment }}.tfstate'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
+              - task: TerraformTaskV1@0
+                displayName: 'plan'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'plan'
+                  commandOptions: '-input=false -var-file="./${{ variables.Environment }}/${{ variables.Application }}-${{ variables.Environment }}.tfvars"'
+                  environmentServiceNameAzureRM: ${{ variables.backendServiceArm }}
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
+
+  - stage: apply
+    dependsOn: [plan]
+    condition: succeeded('plan')
+    jobs:
+      - job: terraform_apply
+        steps:
+              - checkout: self
+              - task: TerraformInstaller@0
+                displayName: 'install'
+                inputs:
+                  terraformVersion: ${{ variables.terraformVersion }}
+              - task: TerraformTaskV2@2 #TerraformTaskV1@0
+                displayName: 'init'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: ${{ variables.backendServiceArm }}
+                  backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+                  backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+                  backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+                  backendAzureRmKey: '${{ variables.Application }}-${{ variables.Environment }}.tfstate'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
+              - task: TerraformTaskV1@0
+                displayName: 'apply'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'apply'
+                  commandOptions: '-input=false -var-file="./${{ variables.Environment }}/${{ variables.Application }}-${{ variables.Environment }}.tfvars"'
+                  environmentServiceNameAzureRM: ${{ variables.backendServiceArm }}
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
+
+  - stage: destroy
+    jobs:
+      - job: terraform_destroy
+        steps:
+              - checkout: self
+              - task: TerraformInstaller@0
+                displayName: 'install'
+                inputs:
+                  terraformVersion: ${{ variables.terraformVersion }}
+              - task: TerraformTaskV2@2  #TerraformTaskV1@0
+                displayName: 'init'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: ${{ variables.backendServiceArm }}
+                  backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+                  backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+                  backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+                  backendAzureRmKey: '${{ variables.Application }}-${{ variables.Environment }}.tfstate'
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
+              - task: TerraformTaskV1@0
+                displayName: 'destroy'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'destroy'
+                  commandOptions: '-input=false -var-file="./${{ variables.Environment }}/${{ variables.Application }}-${{ variables.Environment }}.tfvars"'
+                  environmentServiceNameAzureRM: ${{ variables.backendServiceArm }}
+                  workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'

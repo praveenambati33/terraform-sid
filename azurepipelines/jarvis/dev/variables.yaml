@@ -1,0 +1,19 @@
+variables:
+
+#Application variables
+  - name: Application
+    value: 'jarvis'
+  - name: Environment
+    value: 'dev'
+
+#Backend Configuration variables
+  - name: terraformVersion                    # <<-- Terraform version
+    value: '1.2.0'
+  - name: backendServiceArm                   # <<-- Service Connection Name
+    value: 'ACP-DEV'
+  - name: backendAzureRmResourceGroupName     # <<-- Resource Group name to store tfstate file
+    value: 'resourcegroup-tfstate'
+  - name: backendAzureRmStorageAccountName    # <<-- Storage Account name to tfstate file
+    value: 'terraformtfstate01'
+  - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already created on azure portal before running pipeline.
+    value: 'jarvis-dev'
