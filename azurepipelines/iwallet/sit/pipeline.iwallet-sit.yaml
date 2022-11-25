@@ -40,10 +40,10 @@ stages :
                 inputs:
                   provider: 'azurerm'
                   command: 'init'
-                  backendServiceArm: ${{ variables.backendServiceArm }}
-                  backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
-                  backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
-                  backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
+                  # backendServiceArm: ${{ variables.backendServiceArm }}
+                  # backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
+                  # backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
+                  # backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}
                   backendAzureRmKey: '${{ variables.Application }}-${{ variables.Environment }}.tfstate'
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
               - task: TerraformTaskV1@0
