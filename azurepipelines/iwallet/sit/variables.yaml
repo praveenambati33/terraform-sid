@@ -12,8 +12,8 @@ variables:
   - name: backendServiceArm                   # <<-- Service Connection Name
     value: 'p32-sit-sc'
   - name: backendAzureRmResourceGroupName     # <<-- Resource Group name to store tfstate file
-    value: 'resourcegroup-tfstate'
+    value: 'eus-hub-central-devops-rg'
   - name: backendAzureRmStorageAccountName    # <<-- Storage Account name to tfstate file
-    value: 'terraformtfstate01'
+    value: 'eusdevopsstgacc01'
   - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already on azure portal created before running pipeline.
     value: 'iwallet-sit'
