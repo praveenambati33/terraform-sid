@@ -3,7 +3,7 @@ module "ResourceGroup" {
   source    = "../../modules/ResourceGroup"
   base_name = var.resourcegroupname
   location  = var.location
-  tags = var.tags
+  tags      = var.tags
 
 }
 
@@ -17,6 +17,7 @@ module "EventHub" {
   iwalletensname             = var.iwalletensname
   eventhubstorageaccountname = var.eventhubstorageaccountname
   eventhubcontainers_list    = var.eventhubcontainers_list
+  tags                       = var.tags
 
 }
 
@@ -45,6 +46,7 @@ module "FunctionApp" {
 
   #Applicaiton Insights
   applicationinsightsname = var.applicationinsightsname
+  tags                    = var.tags
 
 }
 
@@ -56,6 +58,7 @@ module "RecoveryServiceVault" {
   location          = var.location
   rsvname           = var.rsvname
   rsvfspolicyname   = var.rsvfspolicyname
+  tags              = var.tags
 
 }
 
@@ -85,6 +88,8 @@ module "FunctionApp2" {
   #Applicaiton Insights
   fn_ai_key_out = module.FunctionApp.fn_ai_key_out
 
+  tags = var.tags
+
 }
 
 
@@ -96,7 +101,7 @@ module "RecoveryServiceVault2" {
   location          = var.location
   rsvname           = var.javarsvname
   rsvfspolicyname   = var.javarsvfspolicyname
-
+  tags              = var.tags
 }
 
 module "CosomosDB" {
@@ -111,6 +116,7 @@ module "CosomosDB" {
   leasepartitionkey         = var.leasepartitionkey
   iwalletcosmosdbcontainer2 = var.iwalletcosmosdbcontainer2
   walletpartitionkey        = var.walletpartitionkey
+  tags                      = var.tags
 
 }
 
@@ -121,6 +127,7 @@ module "DataFactory" {
   resourcegroupname = var.resourcegroupname
   location          = var.location
   iwalletdfname     = var.iwalletdfname
+  tags              = var.tags
 
 }
 
@@ -132,6 +139,7 @@ module "StorageAccount" {
   location           = var.location
   storageaccountname = var.storageaccountname
   containers_list    = var.containers_list
+  tags               = var.tags
 
 }
 
@@ -142,7 +150,7 @@ module "KeyVault" {
   resourcegroupname = var.resourcegroupname
   location          = var.location
   keyvaultname      = var.keyvaultname
-
+  tags              = var.tags
 }
 
 module "ApplicationSecurityGroup" {
@@ -151,6 +159,7 @@ module "ApplicationSecurityGroup" {
   source            = "../../modules/ApplicationSecurityGroup"
   resourcegroupname = var.resourcegroupname
   location          = var.location
-  iwalletasg      = var.iwalletasg
+  iwalletasg        = var.iwalletasg
+  tags              = var.tags
 
 }
