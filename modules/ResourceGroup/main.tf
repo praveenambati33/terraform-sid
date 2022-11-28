@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "resourcegroup" {
-  name     = var.resource_group_name
+resource "azurerm_resource_group" "iwallet-rg" {
+  name     = var.base_name
   location = var.location
 }
