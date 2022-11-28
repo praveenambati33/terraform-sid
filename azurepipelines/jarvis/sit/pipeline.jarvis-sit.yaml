@@ -52,7 +52,7 @@ stages :
                   provider: 'azurerm'
                   command: 'plan'
                   commandOptions: '-input=false -var-file="./${{ variables.Environment }}/${{ variables.Application }}-${{ variables.Environment }}.tfvars"'
-                  environmentServiceNameAzureRM: ${{ variables.backendServiceArm }}
+                  environmentServiceNameAzureRM: ${{ variables.environmentServiceNameAzureRM }}
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
 
   - stage: apply
@@ -83,7 +83,7 @@ stages :
                   provider: 'azurerm'
                   command: 'apply'
                   commandOptions: '-input=false -var-file="./${{ variables.Environment }}/${{ variables.Application }}-${{ variables.Environment }}.tfvars"'
-                  environmentServiceNameAzureRM: ${{ variables.backendServiceArm }}
+                  environmentServiceNameAzureRM: ${{ variables.environmentServiceNameAzureRM }}
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
 
   - stage: destroy
@@ -112,5 +112,5 @@ stages :
                   provider: 'azurerm'
                   command: 'destroy'
                   commandOptions: '-input=false -var-file="./${{ variables.Environment }}/${{ variables.Application }}-${{ variables.Environment }}.tfvars"'
-                  environmentServiceNameAzureRM: ${{ variables.backendServiceArm }}
+                  environmentServiceNameAzureRM: ${{ variables.environmentServiceNameAzureRM }}
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'

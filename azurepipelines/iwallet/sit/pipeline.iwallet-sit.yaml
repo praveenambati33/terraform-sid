@@ -41,7 +41,6 @@ stages :
                   provider: 'azurerm'
                   command: 'init'
                   backendServiceArm: ${{ variables.backendServiceArm }}
-                  backendAzureRmSubscriptionId: '475ecfec-e18a-4664-a8cd-6e3424489e4b'
                   backendAzureRmResourceGroupName: ${{ variables.backendAzureRmResourceGroupName }}
                   backendAzureRmStorageAccountName: ${{ variables.backendAzureRmStorageAccountName }}
                   backendAzureRmContainerName: ${{ variables.backendAzureRmContainerName }}

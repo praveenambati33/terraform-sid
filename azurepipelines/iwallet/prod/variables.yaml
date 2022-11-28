@@ -4,16 +4,21 @@ variables:
   - name: Application
     value: 'iwallet'
   - name: Environment
-    value: 'dev'
+    value: 'prod'
 
 #Backend Configuration variables
   - name: terraformVersion                    # <<-- Terraform version
     value: '1.2.0'
   - name: backendServiceArm                   # <<-- Service Connection Name
-    value: ''
+    value: 'p32-chub-sc'
   - name: backendAzureRmResourceGroupName     # <<-- Resource Group name to store tfstate file
     value: 'resourcegroup-tfstate'
   - name: backendAzureRmStorageAccountName    # <<-- Storage Account name to tfstate file
     value: 'terraformtfstate01'
   - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already created on azure portal before running pipeline.
-    value: 'iwallet-dev'
+    value: 'iwallet-prod'
+
+
+#Environment configuration variables
+  - name: environmentServiceNameAzureRM       # <<-- Environment Service connection
+    value: ''

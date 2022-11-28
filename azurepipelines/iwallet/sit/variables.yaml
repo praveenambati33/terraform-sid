@@ -20,7 +20,7 @@ variables:
 
 
 #Environment configuration variables
-  - name: environmentServiceNameAzureRM       # <<-- 
+  - name: environmentServiceNameAzureRM       # <<-- Environment Service connection
     value: 'p32-sit-sc'
 
     
