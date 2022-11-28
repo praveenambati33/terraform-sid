@@ -17,3 +17,10 @@ variables:
     value: 'eusdevopsstgacc01'
   - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already on azure portal created before running pipeline.
     value: 'iwallet-sit'
+
+
+#Environment configuration variables
+  - name: environmentServiceNameAzureRM       # <<-- 
+    value: 'p32-chub-sc'
+
+    
