@@ -1,18 +1,10 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.31.0"
-    }
-  }
-}
-
 resource "azurerm_storage_account" "iwallet-js-sa" {
   name                     = var.stroageaccountname
   resource_group_name      = var.resourcegroupname
   location                 = var.location
   account_tier             = var.accounttier
   account_replication_type = var.replicationtype
+  tags = var.tags
 
 }
 
@@ -22,6 +14,7 @@ resource "azurerm_service_plan" "iwallet-js-app-sp" {
   location            = var.location
   os_type             = var.ostype
   sku_name            = var.sku
+  tags = var.tags
 }
 
 resource "azurerm_windows_function_app" "iwallet-js-fun" {
@@ -48,6 +41,7 @@ resource "azurerm_windows_function_app" "iwallet-js-fun" {
     }
     application_insights_key = azurerm_application_insights.iwallet-js-ai.instrumentation_key
   }
+  tags = var.tags
 }
 
 resource "azurerm_application_insights" "iwallet-js-ai" {
@@ -55,5 +49,5 @@ resource "azurerm_application_insights" "iwallet-js-ai" {
   resource_group_name = var.resourcegroupname
   location            = var.location
   application_type    = "web"
-  
+  tags = var.tags
 }

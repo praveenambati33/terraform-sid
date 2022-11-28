@@ -195,3 +195,9 @@ variable "eventhubs" {
     blob_container_name = string
   }))
 }
+
+
+variable "tags" {
+  description = "Additional resource tags"
+  type        = map(string)
+}

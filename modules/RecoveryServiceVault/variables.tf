@@ -1,21 +1,25 @@
 variable "resourcegroupname" {
   type        = string
-  description = "The name of the iwallet resource group"
+  description = "The name of the resource group"
 }
 
 variable "location" {
   type        = string
-  description = "location for the  iwallet resources"
+  description = "resources should deploy only on 'eastus' as per the policy"
 }
 
 
 variable "rsvname" {
   type = string
- description = "location for the  iwallet resources" 
+ description = "The name of the Recovery Service Vault name"
 }
 
 variable "rsvfspolicyname" {
   type = string
-  description = "location for the  iwallet resources" 
+  description = "The name of the Recovery Service Vault policy name"
+}
 
+variable "tags" {
+  description = "Resource tags"
+  type        = map(string)
 }

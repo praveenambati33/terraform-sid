@@ -22,12 +22,15 @@ resource "azurerm_cosmosdb_account" "iwallet-cosmosdb-account" {
     retention_in_hours  = "8"
     storage_redundancy  = "Geo"
   }
+  tags = var.tags
 }
 
 resource "azurerm_cosmosdb_sql_database" "iwallet-db" {
   name                = var.iwalletcosmosdb
   resource_group_name = azurerm_cosmosdb_account.iwallet-cosmosdb-account.resource_group_name
   account_name        = azurerm_cosmosdb_account.iwallet-cosmosdb-account.name
+  
+
 }
 
 resource "azurerm_cosmosdb_sql_container" "leases-container" {
@@ -77,4 +80,5 @@ resource "azurerm_cosmosdb_sql_container" "walletCollection-container" {
       path = "/\"_etag\"/?"
     }
   }
+  
 }

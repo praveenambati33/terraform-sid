@@ -5,7 +5,7 @@ resource "azurerm_storage_account" "storageaccount" {
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
+  tags = var.tags
 }
 
 resource "azurerm_storage_container" "container" {
@@ -17,6 +17,7 @@ resource "azurerm_storage_container" "container" {
 
 
 resource "azurerm_eventhub_namespace" "iwallet-ens" {
+
   depends_on = [
     azurerm_storage_account.storageaccount,
   ]
@@ -26,6 +27,7 @@ resource "azurerm_eventhub_namespace" "iwallet-ens" {
   sku                 = "Standard"
   capacity            = 1
   minimum_tls_version = "1.1"
+  tags = var.tags
 }
 
 resource "azurerm_eventhub" "iwallet-eventhubs" {
@@ -45,4 +47,5 @@ resource "azurerm_eventhub" "iwallet-eventhubs" {
       storage_account_id  = azurerm_storage_account.storageaccount.id
     }
   }
+  
 }

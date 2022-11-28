@@ -3,6 +3,7 @@ resource "azurerm_recovery_services_vault" "vault" {
   location            = var.location
   resource_group_name = var.resourcegroupname
   sku                 = "Standard"
+  tags = var.tags
 }
 
 
@@ -19,4 +20,5 @@ resource "azurerm_backup_policy_file_share" "example" {
   retention_daily {
     count = 30
   }
+
 }

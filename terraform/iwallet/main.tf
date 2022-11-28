@@ -3,6 +3,7 @@ module "ResourceGroup" {
   source    = "../../modules/ResourceGroup"
   base_name = var.resourcegroupname
   location  = var.location
+  tags = var.tags
 
 }
 

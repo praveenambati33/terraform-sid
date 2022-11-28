@@ -1,15 +1,16 @@
 variable "resourcegroupname" {
   type        = string
-  description = "The name of the iwallet resource group"
+  description = "The name of the resource group"
 }
 
 variable "location" {
   type        = string
-  description = "location for the  iwallet resources"
+  description = "resources should deploy only on 'eastus' as per the policy"
 }
 
 variable "iwalletensname" {
   type = string  
+  description = "The name of the Event Hub Namespace"
 }
 
 variable "eventhubs" {
@@ -17,13 +18,22 @@ variable "eventhubs" {
     eventhubname                  = string
     blob_container_name    = string
   }))
+  description = "List of EventHubs"
 }
 
 variable "eventhubstorageaccountname" {
     type = string
+    description = "EventHub capture storage account"
 }
 
  variable "eventhubcontainers_list" {
   type = list(any)  
+  description = "EventHub containers for capturing the events for event hub"
   
  }
+
+
+variable "tags" {
+  description = "Resource tags"
+  type        = map(string)
+}

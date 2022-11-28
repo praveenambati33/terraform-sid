@@ -1,18 +1,10 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.31.0"
-    }
-  }
-}
-
 resource "azurerm_storage_account" "sa" {
   name                     = var.stroageaccountname
   resource_group_name      = var.resourcegroupname
   location                 = var.location
   account_tier             = var.accounttier
   account_replication_type = var.replicationtype
+  tags = var.tags
 }
 
 resource "azurerm_service_plan" "appsp" {
@@ -21,6 +13,7 @@ resource "azurerm_service_plan" "appsp" {
   location            = var.location
   os_type             = var.ostype
   sku_name            = var.sku
+  tags = var.tags
 }
 
 resource "azurerm_windows_function_app" "win-fn" {
@@ -47,6 +40,7 @@ resource "azurerm_windows_function_app" "win-fn" {
     }
     application_insights_key = azurerm_application_insights.app-ai.instrumentation_key
   }
+  tags = var.tags
 }
 
 resource "azurerm_application_insights" "app-ai" {
@@ -55,6 +49,7 @@ resource "azurerm_application_insights" "app-ai" {
   location            = var.location
   workspace_id        = azurerm_log_analytics_workspace.law-ws.id
   application_type    = "web"
+  tags = var.tags
   
 }
 
@@ -64,4 +59,5 @@ resource "azurerm_log_analytics_workspace" "law-ws" {
   location            = var.location
   sku                 = "PerGB2018"
   retention_in_days   = 30
+  tags = var.tags
 }

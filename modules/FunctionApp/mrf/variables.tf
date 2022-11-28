@@ -1,11 +1,11 @@
 variable "resourcegroupname" {
   type        = string
-  description = "The name of the iwallet resource group"
+  description = "The name of the resource group"
 }
 
 variable "location" {
   type        = string
-  description = "location for the  iwallet resources"
+  description = "resources should deploy only on 'eastus' as per the policy"
 }
 
 variable "serviceplanname" {
@@ -72,4 +72,9 @@ variable "applicationinsightsname" {
 
 variable "lawworkspace" {
   type = string  
+}
+
+variable "tags" {
+  description = "Additional resource tags"
+  type        = map(string)
 }

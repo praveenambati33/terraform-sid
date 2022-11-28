@@ -5,4 +5,6 @@ resource "azurerm_data_factory" "example" {
   identity {
     type = "SystemAssigned"
   }
+  tags = var.tags
 }
+

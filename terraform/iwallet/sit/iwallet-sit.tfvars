@@ -46,6 +46,7 @@ iwalletdfname = "eus-sit2-iwallet-asg"
 
 
 #Event Hub Namespace and Event Hubs
+
 eventhubstorageaccountname = "eussit2walletslogssa01"
 
 eventhubcontainers_list = [
@@ -92,11 +93,21 @@ eventhubs = {
   }
 }
 
+# Application Security Group 
 iwalletasg = "eus-sit2-iwallet-asg"
 
-storageaccountname = "eusiwalletsit2sa01"
+# Storage Account for Cosomo DB Backup 
+storageaccountname = "eussit2stgacc01backup"
 
 containers_list = [
-  { name = "iwalletlogs", access_type = "private" },
-  { name = "iwalletlogs-auditevent", access_type = "private" }
+  { name = "eus-sit2-iwallet-cosdb-bkp", access_type = "private" }
 ]
+
+# Application specific tags 
+
+tags = {
+    "Application Name" = "IWallet"
+    "applicationType" = "serverless-iwallet"
+    "Dept Id" = "411"
+    "Environment" = "Ent SIT2"
+}
