@@ -1,63 +1,24 @@
-resource "azurerm_storage_account" "sa" {
-  name                     = var.stroageaccountname
-  resource_group_name      = var.resourcegroupname
-  location                 = var.location
-  account_tier             = var.accounttier
-  account_replication_type = var.replicationtype
-  tags = var.tags
-}
-
-resource "azurerm_service_plan" "appsp" {
-  name                = var.serviceplanname
-  resource_group_name = var.resourcegroupname
-  location            = var.location
-  os_type             = var.ostype
-  sku_name            = var.sku
-  tags = var.tags
-}
-
 resource "azurerm_windows_function_app" "win-fn" {
+  
   name                = var.functionappname
   resource_group_name = var.resourcegroupname
   location            = var.location
 
-  storage_account_name       = azurerm_storage_account.sa.name
-  storage_account_access_key = azurerm_storage_account.sa.primary_access_key
-  service_plan_id            = azurerm_service_plan.appsp.id
+  storage_account_name       = var.storageaccountname
+  storage_account_access_key = var.storage_account_access_key
+  service_plan_id            = var.service_plan_id
 
-  identity {
-    type = "SystemAssigned"
-  }
-
-  app_settings = {
-    "key" = "value"
-  }
+  app_settings = var.function_app_application_settings
 
   site_config {
     ftps_state = "FtpsOnly"
     application_stack {
-      node_version = var.stackversion
+      node_version = lookup(var.stack_version, "node", null)
+      java_version = lookup(var.stack_version, "java", null)
     }
-    application_insights_key = azurerm_application_insights.app-ai.instrumentation_key
+    application_insights_key = var.application_insights_key
   }
-  tags = var.tags
-}
 
-resource "azurerm_application_insights" "app-ai" {
-  name                = var.applicationinsightsname
-  resource_group_name = var.resourcegroupname
-  location            = var.location
-  workspace_id        = azurerm_log_analytics_workspace.law-ws.id
-  application_type    = "web"
   tags = var.tags
-  
-}
 
-resource "azurerm_log_analytics_workspace" "law-ws" {
-  name                = var.lawworkspace
-  resource_group_name = var.resourcegroupname
-  location            = var.location
-  sku                 = "PerGB2018"
-  retention_in_days   = 30
-  tags = var.tags
 }

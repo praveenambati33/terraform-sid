@@ -1,0 +1,26 @@
+variables:
+
+#Application variables
+  - name: Application
+    value: 'mrf'
+  - name: Environment
+    value: 'sit'
+
+#Backend Configuration variables
+  - name: terraformVersion                    # <<-- Terraform version
+    value: '1.2.0'
+  - name: backendServiceArm                   # <<-- Backend Service Connection Name, where tfstates will get store
+    value: 'p32-chub-sc'
+  - name: backendAzureRmResourceGroupName     # <<-- Resource Group name to store tfstate file
+    value: 'eus-hub-central-devops-rg'
+  - name: backendAzureRmStorageAccountName    # <<-- Storage Account name to tfstate file
+    value: 'eusdevopsstgacc01'
+  - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already on azure portal created before running pipeline.
+    value: 'mrf-sit'
+
+
+#Environment configuration variables
+  - name: environmentServiceNameAzureRM       # <<-- Environment Service connection
+    value: 'p32-sit-sc'
+
+    

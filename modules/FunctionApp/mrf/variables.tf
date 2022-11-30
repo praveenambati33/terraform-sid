@@ -8,43 +8,6 @@ variable "location" {
   description = "resources should deploy only on 'eastus' as per the policy"
 }
 
-variable "serviceplanname" {
-  type = string
-
-  description = "location for the  iwallet resources"
-}
-
-variable "ostype" {
-  type = string
-
-  description = "location for the  iwallet resources"
-}
-
-variable "sku" {
-  type = string
-
-  description = "location for the  iwallet resources"
-}
-
-variable "stroageaccountname" {
-  type = string
-
-  description = "location for the  iwallet resources"
-}
-
-variable "accounttier" {
-  type = string
-
-  description = "location for the  iwallet resources"
-}
-
-variable "replicationtype" {
-  type = string
-
-  description = "location for the  iwallet resources"
-
-}
-
 variable "functionappname" {
   type = string
 
@@ -52,29 +15,36 @@ variable "functionappname" {
 
 }
 
-# variable "appsettings" {
-#   type = map(any)
-
-#   description = "location for the  iwallet resources"
-# }
-
-variable "stackversion" {
-  type = string
-
-  description = "location for the  iwallet resources"
-}
-
-variable "applicationinsightsname" {
-  type        = string
-  description = "location for the  iwallet resources"
-}
-
-
-variable "lawworkspace" {
-  type = string  
-}
-
 variable "tags" {
   description = "Additional resource tags"
   type        = map(string)
+}
+
+
+variable "storageaccountname"{
+  type = string 
+  description = "The name of the WebApp SKU"
+}
+
+variable "stack_version" {
+  type = map
+}
+
+
+variable "service_plan_id" {
+  type        = string
+  description = "Service Plan ID."
+}
+
+variable "storage_account_access_key" {
+  type        = string
+  description = "Storage account access key."
+}       
+
+variable "function_app_application_settings"{
+  type = map
+}
+
+variable "application_insights_key" {
+  type = string  
 }
