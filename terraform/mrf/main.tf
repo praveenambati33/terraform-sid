@@ -96,3 +96,27 @@ module "ApplicationInsights" {
   tags                    = var.tags
 
 }
+
+
+module "KeyVault" {
+
+  depends_on        = [module.ResourceGroup]
+  source            = "../../modules/KeyVault"
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  location          = var.location
+  keyvaultname      = var.nodekeyvaultname
+  tags              = var.tags
+}
+
+
+
+module "KeyVault" {
+
+  depends_on        = [module.ResourceGroup]
+  source            = "../../modules/KeyVault"
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  location          = var.location
+  keyvaultname      = var.javakeyvaultname
+  tags              = var.tags
+}
+

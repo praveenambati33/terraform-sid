@@ -24,7 +24,7 @@ module "EventHub" {
 module "FunctionApp" {
 
   depends_on        = [module.ResourceGroup]
-  source            = "../../modules/FunctionApp/iwallet/windows-nodejs"
+  source            = "../../modules/FunctionApp"
   resourcegroupname = var.resourcegroupname
   location          = var.location
 
@@ -65,7 +65,7 @@ module "RecoveryServiceVault" {
 module "FunctionApp2" {
 
   depends_on        = [module.ResourceGroup]
-  source            = "../../modules/FunctionApp/iwallet/windows-java"
+  source            = "../../modules/FunctionApp"
   resourcegroupname = var.resourcegroupname
   location          = var.location
 

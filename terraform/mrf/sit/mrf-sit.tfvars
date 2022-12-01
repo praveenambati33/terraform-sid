@@ -27,6 +27,8 @@ function_app_application_settings = {
   "backend_api_url" = "https://backend.domain.tld/api"
 }
 
+nodekeyvaultname = "eus-perf-mrf-kv-01"
+javakeyvaultname = "eus-perf-relaylistner-kv-01"
 
 tags = {
   "Application Name" = "Fn-App Shared ASP"
