@@ -13,11 +13,6 @@ variable "storageaccountname" {
     description = "The name of the Storage Account name"  
 }
 
-variable "storageaccountlogsname" {
-    type = string
-    description = "The name of the Storage Account name"  
-}
-
 variable "tags" {
   description = "Additional resource tags"
   type        = map(string)
@@ -34,10 +29,6 @@ variable "function_app_application_settings"{
 
 variable "functionappname" {
  type = string 
-}
-
-variable "lawworkspacename" {
-  type = string  
 }
 
 variable "applicationinsightsname" {
