@@ -17,17 +17,6 @@ module "FUNAPP_StorageAccount" {
 
 }
 
-module "StorageAccount" {
-
-  source             = "../../modules/StorageAccount_tmp"
-  storageaccountname = var.storageaccountlogsname
-  resourcegroupname  = module.ResourceGroup.rg_name_out
-  location           = var.location
-  tags               = var.tags
-
-}
-
-
 module "FunctionApp" {
 
   depends_on = [
@@ -49,26 +38,13 @@ module "FunctionApp" {
 
 }
 
-module "LogAnalyticsWorkspace" {
-
-  source            = "../../modules/LogAnalyticsWorkspace"
-  resourcegroupname = module.ResourceGroup.rg_name_out
-  location          = var.location
-  lawworkspacename  = var.lawworkspacename
-  tags              = var.tags
-
-}
-
 module "ApplicationInsights" {
 
-  depends_on = [
-    module.LogAnalyticsWorkspace
-  ]
   source                  = "../../modules/ApplicationInsights"
   resourcegroupname       = module.ResourceGroup.rg_name_out
   location                = var.location
   applicationinsightsname = var.applicationinsightsname
-  workspace_id            = module.LogAnalyticsWorkspace.azurerm_log_analytics_workspace_output
+  workspace_id            = null
   tags                    = var.tags
 
 }

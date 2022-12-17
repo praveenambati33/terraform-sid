@@ -8,45 +8,34 @@ variable "location" {
   description = "location for the  iwallet resources"
 }
 
-variable "serviceplanname" {
+variable "nodeserviceplanname" {
   type        = string
   description = "location for the  iwallet resources"
 }
 
-variable "ostype" {
+variable "node_ostype" {
   type        = string
   description = "location for the  iwallet resources"
 }
 
-variable "sku" {
+variable "node_sku" {
   type        = string
   description = "location for the  iwallet resources"
 }
 
-variable "stroageaccountname" {
+variable "nodestorageaccountname" {
   type        = string
   description = "location for the  iwallet resources"
 }
 
-variable "accounttier" {
-  type        = string
-  description = "location for the  iwallet resources"
-}
-
-variable "replicationtype" {
+variable "nodefunctionappname" {
   type        = string
   description = "location for the  iwallet resources"
 
 }
 
-variable "functionappname" {
-  type        = string
-  description = "location for the  iwallet resources"
-
-}
-
-variable "stackversion" {
-  type        = string
+variable "node_stack_version" {
+   type = map 
   description = "location for the  iwallet resources"
 }
 
@@ -55,18 +44,27 @@ variable "applicationinsightsname" {
   description = "location for the  iwallet resources"
 }
 
-variable "rsvname" {
+variable "nodersvname" {
 
   type        = string
   description = "location for the  iwallet resources"
 }
 
-variable "rsvfspolicyname" {
+variable "nodersvfspolicyname" {
 
   type        = string
   description = "location for the  iwallet resources"
 
 }
+
+variable "java_function_app_application_settings"{
+  type = map
+}
+
+variable "node_function_app_application_settings"{
+  type = map
+}
+
 
 # Java Function App
 
@@ -75,30 +73,19 @@ variable "javaserviceplanname" {
   description = "location for the  iwallet resources"
 }
 
-variable "javaostype" {
+variable "java_ostype" {
   type        = string
   description = "location for the  iwallet resources"
 }
 
-variable "javasku" {
+variable "java_sku" {
   type        = string
   description = "location for the  iwallet resources"
 }
 
-variable "javastroageaccountname" {
+variable "javastorageaccountname" {
   type        = string
   description = "location for the  iwallet resources"
-}
-
-variable "javaaccounttier" {
-  type        = string
-  description = "location for the  iwallet resources"
-}
-
-variable "javareplicationtype" {
-  type        = string
-  description = "location for the  iwallet resources"
-
 }
 
 variable "javafunctionappname" {
@@ -107,8 +94,8 @@ variable "javafunctionappname" {
 
 }
 
-variable "javastackversion" {
-  type        = string
+variable "java_stack_version" {
+   type = map
   description = "location for the  iwallet resources"
 }
 
@@ -151,7 +138,11 @@ variable "walletpartitionkey" {
 
 # key vault 
 
-variable "keyvaultname" {
+variable "appkeyvaultname" {
+  type = string
+}
+
+variable "cosmoskeyvaultname" {
   type = string
 }
 
@@ -170,8 +161,8 @@ variable "storageaccountname" {
   type = string
 }
 
-variable "containers_list" {
-  type = list(any)
+variable "nodecontainerlist" {
+  type = list
 }
 
 #Event Hub 
@@ -201,3 +192,4 @@ variable "tags" {
   description = "Additional resource tags"
   type        = map(string)
 }
+

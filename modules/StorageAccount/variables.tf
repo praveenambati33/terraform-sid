@@ -13,10 +13,10 @@ variable "storageaccountname" {
     description = "The name of the Storage Account name"  
 }
 
- variable "containers_list" {
-  type = list   
-  description = "Containers names for Storage Account"
- }
+#  variable "containers_list" {
+#   type = list   
+#   description = "Containers names for Storage Account"
+#  }
 
  variable "tags" {
   description = "Resource tags"

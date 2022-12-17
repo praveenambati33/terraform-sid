@@ -7,100 +7,149 @@ module "ResourceGroup" {
 
 }
 
-module "EventHub" {
 
-  depends_on                 = [module.ResourceGroup]
-  source                     = "../../modules/EventHub"
-  resourcegroupname          = var.resourcegroupname
-  location                   = var.location
-  eventhubs                  = var.eventhubs
-  iwalletensname             = var.iwalletensname
-  eventhubstorageaccountname = var.eventhubstorageaccountname
-  eventhubcontainers_list    = var.eventhubcontainers_list
-  tags                       = var.tags
+module "ApplicationInsights" {
 
-}
-
-module "FunctionApp" {
-
-  depends_on        = [module.ResourceGroup]
-  source            = "../../modules/FunctionApp"
-  resourcegroupname = var.resourcegroupname
-  location          = var.location
-
-  #Service Plan
-  serviceplanname = var.serviceplanname
-  ostype          = var.ostype
-  sku             = var.sku
-
-  #Storage Account
-  stroageaccountname = var.stroageaccountname
-  accounttier        = var.accounttier
-  replicationtype    = var.replicationtype
-
-  #Function App
-  functionappname = var.functionappname
-
-  # appsettings = var.appsettings
-  stackversion = var.stackversion
-
-  #Applicaiton Insights
+  source                  = "../../modules/ApplicationInsights"
+  resourcegroupname       = module.ResourceGroup.rg_name_out
+  location                = var.location
   applicationinsightsname = var.applicationinsightsname
+  workspace_id            = null
   tags                    = var.tags
 
 }
 
-module "RecoveryServiceVault" {
+module "NODE_ApplicationServicePlan" {
 
-  depends_on        = [module.FunctionApp]
+  depends_on = [
+    module.ResourceGroup
+  ]
+  source            = "../../modules/ApplicationServicePlan"
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  serviceplanname   = var.nodeserviceplanname
+  location          = var.location
+  ostype            = var.node_ostype
+  sku               = var.node_sku
+  tags              = var.tags
+  
+}
+
+module "NODE_StorageAccount" {
+
+  source             = "../../modules/StorageAccount"
+  storageaccountname = var.nodestorageaccountname
+  resourcegroupname  = module.ResourceGroup.rg_name_out
+  location           = var.location
+  tags               = var.tags
+
+}
+
+module "NODE_FunctionApp" {
+
+  depends_on = [
+    module.ResourceGroup,
+    module.NODE_StorageAccount,
+    module.ApplicationInsights
+  ]
+  source                            = "../../modules/FunctionApp"
+  resourcegroupname                 = module.ResourceGroup.rg_name_out
+  location                          = var.location
+  service_plan_id                   = module.JAVA_ApplicationServicePlan.app_sp_out
+  storageaccountname                = module.NODE_StorageAccount.sa_name_out
+  storage_account_access_key        = module.NODE_StorageAccount.sa_primary_access_key_out
+  functionappname                   = var.nodefunctionappname
+  stack_version                     = var.node_stack_version
+  function_app_application_settings = var.node_function_app_application_settings
+  application_insights_key          = module.ApplicationInsights.azurerm_application_insights_out
+  tags                              = var.tags
+
+}
+
+module "KeyVault" {
+
+  depends_on        = [module.ResourceGroup]
+  source            = "../../modules/KeyVault"
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  location          = var.location
+  keyvaultname      = var.appkeyvaultname
+  tags              = var.tags
+}
+
+
+module "NODE_RecoveryServiceVault" {
+
   source            = "../../modules/RecoveryServiceVault"
   resourcegroupname = var.resourcegroupname
   location          = var.location
-  rsvname           = var.rsvname
-  rsvfspolicyname   = var.rsvfspolicyname
+  rsvname           = var.nodersvname
+  rsvfspolicyname   = var.nodersvfspolicyname
   tags              = var.tags
 
 }
 
-module "FunctionApp2" {
+module "JAVA_ApplicationServicePlan" {
 
-  depends_on        = [module.ResourceGroup]
-  source            = "../../modules/FunctionApp"
-  resourcegroupname = var.resourcegroupname
+  depends_on = [
+    module.ResourceGroup
+  ]
+  source            = "../../modules/ApplicationServicePlan"
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  serviceplanname   = var.javaserviceplanname
   location          = var.location
+  ostype            = var.java_ostype
+  sku               = var.java_sku
+  tags              = var.tags
+  
+}
 
-  #Service Plan
-  javaserviceplanname = var.javaserviceplanname
-  javaostype          = var.javaostype
-  javasku             = var.javasku
+module "JAVA_StorageAccount" {
 
-  #Storage Account
-  javastroageaccountname = var.javastroageaccountname
-  javaaccounttier        = var.javaaccounttier
-  javareplicationtype    = var.javareplicationtype
-
-  #Function App
-  javafunctionappname = var.javafunctionappname
-
-  # appsettings = var.appsettings
-  javastackversion = var.javastackversion
-
-  #Applicaiton Insights
-  fn_ai_key_out = module.FunctionApp.fn_ai_key_out
-
-  tags = var.tags
+  source             = "../../modules/StorageAccount"
+  storageaccountname = var.javastorageaccountname
+  resourcegroupname  = module.ResourceGroup.rg_name_out
+  location           = var.location
+  tags               = var.tags
 
 }
 
+module "JAVA_FunctionApp" {
 
-module "RecoveryServiceVault2" {
+  depends_on = [
+    module.ResourceGroup,
+    module.JAVA_StorageAccount,
+    module.JAVA_ApplicationServicePlan
+  ]
+  source                            = "../../modules/FunctionApp"
+  resourcegroupname                 = module.ResourceGroup.rg_name_out
+  location                          = var.location
+  service_plan_id                   = module.JAVA_ApplicationServicePlan.app_sp_out
+  storageaccountname                = module.JAVA_StorageAccount.sa_name_out
+  storage_account_access_key        = module.JAVA_StorageAccount.sa_primary_access_key_out
+  functionappname                   = var.javafunctionappname
+  stack_version                     = var.java_stack_version
+  function_app_application_settings = var.java_function_app_application_settings
+  application_insights_key          = module.ApplicationInsights.azurerm_application_insights_out
+  tags                              = var.tags
 
-  depends_on        = [module.FunctionApp]
+}
+
+module "JAVA_RecoveryServiceVault" {
+
   source            = "../../modules/RecoveryServiceVault"
   resourcegroupname = var.resourcegroupname
   location          = var.location
   rsvname           = var.javarsvname
   rsvfspolicyname   = var.javarsvfspolicyname
+  tags              = var.tags
+}
+
+module "App_KeyVault" {
+
+  depends_on        = [module.ResourceGroup]
+  source            = "../../modules/KeyVault"
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  location          = var.location
+  keyvaultname      = var.appkeyvaultname
   tags              = var.tags
 }
 
@@ -131,26 +180,18 @@ module "DataFactory" {
 
 }
 
-module "StorageAccount" {
+module "EventHub" {
 
-  depends_on         = [module.ResourceGroup]
-  source             = "../../modules/StorageAccount"
-  resourcegroupname  = var.resourcegroupname
-  location           = var.location
-  storageaccountname = var.storageaccountname
-  containers_list    = var.containers_list
-  tags               = var.tags
+  depends_on                 = [module.ResourceGroup]
+  source                     = "../../modules/EventHub"
+  resourcegroupname          = var.resourcegroupname
+  location                   = var.location
+  eventhubs                  = var.eventhubs
+  iwalletensname             = var.iwalletensname
+  eventhubstorageaccountname = var.eventhubstorageaccountname
+  eventhubcontainers_list    = var.eventhubcontainers_list
+  tags                       = var.tags
 
-}
-
-module "KeyVault" {
-
-  depends_on        = [module.ResourceGroup]
-  source            = "../../modules/KeyVault"
-  resourcegroupname = var.resourcegroupname
-  location          = var.location
-  keyvaultname      = var.keyvaultname
-  tags              = var.tags
 }
 
 module "ApplicationSecurityGroup" {

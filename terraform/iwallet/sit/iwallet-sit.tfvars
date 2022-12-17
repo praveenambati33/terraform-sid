@@ -3,31 +3,36 @@ resourcegroupname = "eus-sit2-iwallet-rg-02"
 location          = "eastus"
 
 
-# JS Function App
-serviceplanname         = "eus-sit2-iwallet-js-sp-01"
-ostype                  = "Windows"
-sku                     = "Y1"
-stroageaccountname      = "eussit2fnappjs01stgacc"
-accounttier             = "Standard"
-replicationtype         = "LRS"
-functionappname         = "eus-sit2-iwallet-js-01"
-stackversion            = "~14"
 applicationinsightsname = "eus-sit2-iwallet-ai"
-rsvname                 = "eus-sit2-iwallet-fnapp-js-rsv-01"
-rsvfspolicyname         = "eus-sit2-iwallet-js-rsv"
+
+# JS Function App
+nodeserviceplanname    = "eus-sit2-iwallet-js-sp-01"
+node_ostype             = "Windows"
+node_sku                = "Y1"
+nodestorageaccountname = "eussit2fnappjs01stgacc"
+nodefunctionappname    = "eus-sit2-iwallet-js-01"
+node_stack_version     = { node = "~14" }
+nodersvname            = "eus-sit2-iwallet-fnapp-js-rsv-01"
+nodersvfspolicyname    = "eus-sit2-iwallet-js-rsv"
+node_function_app_application_settings = {
+  "tracker_id"      = "AJKGDFJKHFDS"
+  "backend_api_url" = "https://backend.domain.tld/api"
+}
 
 # Java Function App
 
 javaserviceplanname    = "eus-sit2-iwallet-java-sp-01"
-javaostype             = "Windows"
-javasku                = "Y1"
-javastroageaccountname = "eussit2fnappjava01stgacc"
-javaaccounttier        = "Standard"
-javareplicationtype    = "LRS"
+java_ostype             = "Windows"
+java_sku                = "Y1"
+javastorageaccountname = "eussit2fnappjava01stgacc"
 javafunctionappname    = "eus-sit2-iwallet-java-01"
-javastackversion       = "8"
+java_stack_version     =  { java= "8" }
 javarsvname            = "eus-sit2-iwallet-fnapp-java-rsv-01"
 javarsvfspolicyname    = "eus-sit2-iwallet-java-rsv"
+java_function_app_application_settings = {
+  "tracker_id"      = "AJKGDFJKHFDS"
+  "backend_api_url" = "https://backend.domain.tld/api"
+}
 
 
 # CosmoDB and Containers
@@ -39,7 +44,8 @@ iwalletcosmosdbcontainer2 = "walletCollection"
 walletpartitionkey        = "/doctype"
 
 # KeyVault
-keyvaultname = "eus-sit2-iwallet-kv-01"
+appkeyvaultname = "eus-sit2-iwallet-kv-01"
+cosmoskeyvaultname = "eus-sit2-kv-cosmosdb-01"
 
 # DataFactory
 iwalletdfname = "eus-sit2-iwallet-asg"
@@ -99,6 +105,14 @@ iwalletasg = "eus-sit2-iwallet-asg"
 # Storage Account for Cosomo DB Backup 
 storageaccountname = "eussit2stgacc01backup"
 
+javacontainerlist = [
+  { name = "iwalletlogs", access_type = "private" }
+]
+
+nodecontainerlist = [
+  { name = "iwalletlogs", access_type = "private" }
+]
+
 containers_list = [
   { name = "eus-sit2-iwallet-cosdb-bkp", access_type = "private" }
 ]
@@ -106,8 +120,8 @@ containers_list = [
 # Application specific tags 
 
 tags = {
-    "Application Name" = "IWallet"
-    "applicationType" = "serverless-iwallet"
-    "Dept Id" = "411"
-    "Environment" = "Ent SIT2"
+  "Application Name" = "IWallet"
+  "applicationType"  = "serverless-iwallet"
+  "Dept Id"          = "411"
+  "Environment"      = "Ent SIT2"
 }
