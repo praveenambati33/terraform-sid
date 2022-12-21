@@ -9,23 +9,23 @@ module "ResourceGroup" {
 
 module "FUNAPP_StorageAccount" {
 
-  source             = "../../modules/StorageAccount"
-  storageaccountname = var.storageaccountname
-  containers_list    = var.fun_containers_list
-  resourcegroupname  = module.ResourceGroup.rg_name_out
-  location           = var.location
-  tags               = var.tags
+  source            = "../../modules/StorageAccount"
+  storage_list      = var.storageaccountname
+  containers_list   = var.fun_containers_list
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  location          = var.location
+  tags              = var.tags
 
 }
 
 module "StorageAccount" {
 
-  source             = "../../modules/StorageAccount"
-  storageaccountname = var.storageaccountlogsname
-  containers_list    = var.logs_containers_list
-  resourcegroupname  = module.ResourceGroup.rg_name_out
-  location           = var.location
-  tags               = var.tags
+  source            = "../../modules/StorageAccount"
+  storage_list      = var.storageaccountlogsname
+  containers_list   = var.logs_containers_list
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  location          = var.location
+  tags              = var.tags
 
 }
 
