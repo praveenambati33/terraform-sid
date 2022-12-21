@@ -3,10 +3,10 @@ resourcegroupname = "eus-perf-mrf-rg"
 location          = "eastus"
 
 # Storage Account for App Service and App logs
-storageaccountname  = ["euspftransparencymrfp32"]
+storageaccountname  = ["euspftransparencymrfp80"]
 fun_containers_list = []
 # Storage Account for App logs
-storageaccountlogsname = ["eusperfmrfrgb70b"]
+storageaccountlogsname = ["eusperfmrfrgb80b"]
 logs_containers_list   = [{ name = "logs", access_type = "private" }]
 
 
