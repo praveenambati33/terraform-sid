@@ -16,16 +16,6 @@ variable "containers_list" {
   type = list
  }
 
-# variable "storageaccountname" {
-#     type = string
-#     description = "The name of the Storage Account name"  
-# }
-
-#  variable "containers_list" {
-#   type = list   
-#   description = "Containers names for Storage Account"
-#  }
-
  variable "tags" {
   description = "Resource tags"
   type        = map(string)
