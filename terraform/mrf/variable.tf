@@ -26,9 +26,13 @@ variable "logs_containers_list" {
   type = list
 }
 
-variable "storage_list" {
+variable "storageaccountlogsname" {
   type = list
- }
+}
+
+variable "storageaccountname" {
+  type = list
+}
 
 variable "tags" {
   description = "Additional resource tags"
