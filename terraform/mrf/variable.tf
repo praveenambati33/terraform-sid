@@ -18,7 +18,11 @@ variable "location" {
 #     description = "The name of the Storage Account name"  
 # }
 
-variable "containers_list" {
+variable "fun_containers_list" {
+  type = list
+}
+
+variable "logs_containers_list" {
   type = list
 }
 
