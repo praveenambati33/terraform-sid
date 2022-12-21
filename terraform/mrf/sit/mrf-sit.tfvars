@@ -7,7 +7,7 @@ storageaccountname  = ["euspftransparencymrfp32"]
 fun_containers_list = []
 # Storage Account for App logs
 storageaccountlogsname = ["eusperfmrfrgb70b"]
-logs_containers_list   = ["logs"]
+logs_containers_list   = [{ name = "logs", access_type = "private" }]
 
 
 # Log Analytics workspace for AI 
