@@ -67,6 +67,7 @@ resource "azurerm_virtual_machine" "windows_virtualmachine" {
 
   os_profile_windows_config {
     provision_vm_agent              = true                                    #if it false VM agent status will not be in Ready State
+    enable_automatic_upgrades       = true
   }
 
 }
