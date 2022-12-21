@@ -1,43 +1,31 @@
-#Uncomment this block if you want to created Subnet of VM with subnet only
-resource "azurerm_subnet" "vm_subnet" {
+data "azurerm_subnet" "vm_subnet" {
 
-  name                    = var.subnet_name
-  resource_group_name     = var.resource_group_name
-  virtual_network_name    = var.virtual_network_name
-  address_prefixes        = var.address_prefixes
+  name                              = var.subnet_name
+  virtual_network_name              = var.virtual_network_name
+  resource_group_name               = var.subnet_resource_group_name
 
 }
-
-#Uncomment this block if you have already created Subnet of VM
-# data "azurerm_subnet" "vm_subnet" {
-
-#   name                    = var.subnet_name
-#   virtual_network_name    = var.virtual_network_name
-#   resource_group_name     = var.resource_group_name
-
-# }
 
 resource "azurerm_network_interface" "nic" {
 
   name                              = var.vm_nic_name
   location                          = var.location
-  resource_group_name               = var.resource_group_name
+  resource_group_name               = var.resourcegroupname
 
   ip_configuration {
     name                            = var.ip_config_name
-    subnet_id                       = azurerm_subnet.vm_subnet.id           #Uncomment this if you want Subnet with VM
-    # subnet_id                     = data.azurerm_subnet.vm_subnet.id      #Uncomment this if you have created subnet already.
+    subnet_id                       = data.azurerm_subnet.vm_subnet.id
     private_ip_address_allocation   = var.private_ip_address_allocation 
   }
 
 }
 
-resource "azurerm_virtual_machine" "virtualmachine" {
+resource "azurerm_virtual_machine" "linux_virtualmachine" {
 
-  depends_on                        = [azurerm_network_interface.nic,azurerm_subnet.vm_subnet]
+  depends_on                        = [azurerm_network_interface.nic]
   name                              = var.virtualmachine_name          
   location                          = var.location
-  resource_group_name               = var.resource_group_name
+  resource_group_name               = var.resourcegroupname
   network_interface_ids             = [azurerm_network_interface.nic.id]
   vm_size                           = var.vm_size
 
@@ -72,7 +60,7 @@ resource "azurerm_virtual_machine" "virtualmachine" {
   }
 
   os_profile {
-    computer_name                   = var.virtualmachine_name   #local.vm_name
+    computer_name                   = var.computer_name
     admin_username                  = var.admin_usename
     admin_password                  = var.admin_password
   }

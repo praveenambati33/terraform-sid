@@ -9,7 +9,7 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "resource_group_name" {
+variable "resourcegroupname" {
     type = string
     description = "Resource group name"
 }
