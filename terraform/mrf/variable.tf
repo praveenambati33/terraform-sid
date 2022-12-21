@@ -8,21 +8,28 @@ variable "location" {
   description = "location for the  iwallet resources"
 }
 
-variable "storageaccountname" {
-    type = string
-    description = "The name of the Storage Account name"  
+# variable "storageaccountname" {
+#     type = string
+#     description = "The name of the Storage Account name"  
+# }
+
+# variable "storageaccountlogsname" {
+#     type = string
+#     description = "The name of the Storage Account name"  
+# }
+
+variable "containers_list" {
+  type = list
 }
 
-variable "storageaccountlogsname" {
-    type = string
-    description = "The name of the Storage Account name"  
-}
+variable "storage_list" {
+  type = list
+ }
 
 variable "tags" {
   description = "Additional resource tags"
   type        = map(string)
 }
-
 
 variable "stack_version" {
   type = map

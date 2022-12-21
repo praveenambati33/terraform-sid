@@ -1,11 +1,14 @@
 #Resource Group
-resourcegroupname     = "eus-perf-mrf-rg"
-location              = "eastus"
+resourcegroupname = "eus-perf-mrf-rg"
+location          = "eastus"
 
 # Storage Account for App Service and App logs
-storageaccountname     = "euspftransparencymrfp32"
+storageaccountname  = ["euspftransparencymrfp32"]
+fun_containers_list = []
 # Storage Account for App logs
-storageaccountlogsname = "eusperfmrfrgb70b"
+storageaccountlogsname = ["eusperfmrfrgb70b"]
+logs_containers_list   = ["logs"]
+
 
 # Log Analytics workspace for AI 
 lawworkspacename        = "eus-s-mrf-loganalyticsws-01"

@@ -8,10 +8,18 @@ variable "location" {
   description = "resources should deploy only on 'eastus' as per the policy"
 }
 
-variable "storageaccountname" {
-    type = string
-    description = "The name of the Storage Account name"  
-}
+variable "containers_list" {
+  type = list
+ }
+
+ variable "storage_list" {
+  type = list
+ }
+
+# variable "storageaccountname" {
+#     type = string
+#     description = "The name of the Storage Account name"  
+# }
 
 #  variable "containers_list" {
 #   type = list   
