@@ -41,7 +41,7 @@ module "FunctionApp" {
   resourcegroupname                 = module.ResourceGroup.rg_name_out
   location                          = var.location
   service_plan_id                   = data.azurerm_service_plan.shared-appservice-plan.id
-  storageaccountname                = module.FUNAPP_StorageAccount.sa_name_out["name"]
+  storageaccountname                = module.FUNAPP_StorageAccount.sa_name_out["euspftransparencymrfp32"]
   storage_account_access_key        = module.FUNAPP_StorageAccount.sa_primary_access_key_out["primary_access_key"]
   functionappname                   = var.functionappname
   stack_version                     = var.stack_version
