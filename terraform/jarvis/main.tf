@@ -86,7 +86,7 @@ module "HPPC_AppService" {
     module.HPHC_ApplicationInsights,
     module.HPHC_ApplicationServicePlan
   ]
-  source                            = "../../modules/FunctionApp"
+  source                            = "../../modules/AppService"
   resourcegroupname                 = module.ResourceGroup.rg_name_out
   location                          = var.location
   service_plan_id                   = module.HPHC_ApplicationServicePlan.app_sp_out
