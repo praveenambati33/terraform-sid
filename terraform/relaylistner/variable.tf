@@ -9,8 +9,12 @@ variable "location" {
 }
 
 variable "storageaccountname" {
-    type = string
+    type = list
     description = "The name of the Storage Account name"  
+}
+
+variable "containers_list" {
+  type = list
 }
 
 variable "tags" {

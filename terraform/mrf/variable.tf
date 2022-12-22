@@ -8,16 +8,6 @@ variable "location" {
   description = "location for the  iwallet resources"
 }
 
-# variable "storageaccountname" {
-#     type = string
-#     description = "The name of the Storage Account name"  
-# }
-
-# variable "storageaccountlogsname" {
-#     type = string
-#     description = "The name of the Storage Account name"  
-# }
-
 variable "fun_containers_list" {
   type = list
 }

@@ -15,6 +15,7 @@ resource "azurerm_windows_function_app" "win-fn" {
     application_stack {
       node_version = lookup(var.stack_version, "node", null)
       java_version = lookup(var.stack_version, "java", null)
+      dotnet_version = lookup(var.stack_version, "dotnet", null)
     }
     application_insights_key = var.application_insights_key
   }
