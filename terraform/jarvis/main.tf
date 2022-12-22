@@ -23,7 +23,8 @@ module "FunctionApp" {
   depends_on = [
     module.ResourceGroup,
     module.FUNAPP_StorageAccount,
-    module.ApplicationInsights
+    module.ApplicationInsights,
+    module.ApplicationServicePlan
   ]
   source                            = "../../modules/FunctionApp"
   resourcegroupname                 = module.ResourceGroup.rg_name_out
