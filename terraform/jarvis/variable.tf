@@ -60,6 +60,10 @@ variable "sku" {
   description = "location for the  iwallet resources"
 }
 
+variable "hphc_sku" {
+  type        = string
+  description = "location for the  iwallet resources"
+}
 
 variable "hphc_serviceplanname" {
   type        = string

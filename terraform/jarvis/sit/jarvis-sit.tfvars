@@ -31,7 +31,7 @@ hphcappservicename = "hphcvaperf"
 hphc_serviceplanname = "HPHCVAperf"
 hphc_applicationinsightsname ="HPHCVAperf3zbkz"
 hphc_stack_version = { dotnet = "v4.0"}
-
+hphc_sku                = "S1"
 #Application Configuration
 app_settings = {
 

@@ -119,7 +119,7 @@ module "HPHC_ApplicationServicePlan" {
   serviceplanname   = var.hphc_serviceplanname
   location          = var.location
   ostype            = var.ostype
-  sku               = var.sku
+  sku               = var.hphc_sku
   tags              = var.tags
 
 }
