@@ -90,7 +90,7 @@ module "HPPC_AppService" {
   resourcegroupname                 = module.ResourceGroup.rg_name_out
   location                          = var.location
   service_plan_id                   = module.HPHC_ApplicationServicePlan.app_sp_out
-  appservicename                        = var.hphcappservicename
+  appservicename                    = var.hphcappservicename
   stack_version                     = var.hphc_stack_version
   function_app_application_settings = var.function_app_application_settings
   application_insights_key          = module.HPHC_ApplicationInsights.azurerm_application_insights_out
