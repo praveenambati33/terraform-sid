@@ -8,7 +8,7 @@ variable "location" {
   description = "location for the  iwallet resources"
 }
 
-variable "storageaccountname" {
+variable "storage_list" {
     type = list
     description = "The name of the Storage Account name"  
 }
