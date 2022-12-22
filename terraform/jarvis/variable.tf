@@ -59,3 +59,25 @@ variable "sku" {
   type        = string
   description = "location for the  iwallet resources"
 }
+
+
+variable "hphc_serviceplanname" {
+  type        = string
+  description = "location for the  iwallet resources"
+}
+
+variable "hphc_applicationinsightsname" {
+  type        = string
+  description = "location for the  iwallet resources"
+}
+
+variable "hphcappservicename" {
+  type        = string
+  description = "location for the  iwallet resources"
+}
+
+variable "hphc_stack_version" {
+  type        = string
+  description = "location for the  iwallet resources"
+}
+

@@ -9,12 +9,12 @@ module "ResourceGroup" {
 
 module "FUNAPP_StorageAccount" {
 
-  source             = "../../modules/StorageAccount"
-  storage_list = var.storage_list
-  containers_list    = var.containers_list
-  resourcegroupname  = module.ResourceGroup.rg_name_out
-  location           = var.location
-  tags               = var.tags
+  source            = "../../modules/StorageAccount"
+  storage_list      = var.storage_list
+  containers_list   = var.containers_list
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  location          = var.location
+  tags              = var.tags
 
 }
 
@@ -53,7 +53,7 @@ module "ApplicationServicePlan" {
   ostype            = var.ostype
   sku               = var.sku
   tags              = var.tags
-  
+
 }
 
 
@@ -77,4 +77,51 @@ module "KeyVault" {
   location          = var.location
   keyvaultname      = var.keyvaultname
   tags              = var.tags
+}
+
+module "HPPC_AppService" {
+
+  depends_on = [
+    module.ResourceGroup,
+    module.HPHC_ApplicationInsights,
+    module.HPHC_ApplicationServicePlan
+  ]
+  source                            = "../../modules/FunctionApp"
+  resourcegroupname                 = module.ResourceGroup.rg_name_out
+  location                          = var.location
+  service_plan_id                   = module.HPHC_ApplicationServicePlan.app_sp_out
+  appservicename                        = var.hphcappservicename
+  stack_version                     = var.hphc_stack_version
+  function_app_application_settings = var.function_app_application_settings
+  application_insights_key          = module.HPHC_ApplicationInsights.azurerm_application_insights_out
+  tags                              = var.tags
+
+}
+
+
+module "HPHC_ApplicationInsights" {
+
+  source                  = "../../modules/ApplicationInsights"
+  resourcegroupname       = module.ResourceGroup.rg_name_out
+  location                = var.location
+  applicationinsightsname = var.hphc_applicationinsightsname
+  workspace_id            = null
+  tags                    = var.tags
+
+}
+
+
+module "HPHC_ApplicationServicePlan" {
+
+  depends_on = [
+    module.ResourceGroup
+  ]
+  source            = "../../modules/ApplicationServicePlan"
+  resourcegroupname = module.ResourceGroup.rg_name_out
+  serviceplanname   = var.hphc_serviceplanname
+  location          = var.location
+  ostype            = var.ostype
+  sku               = var.sku
+  tags              = var.tags
+
 }
