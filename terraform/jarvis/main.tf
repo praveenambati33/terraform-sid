@@ -28,7 +28,7 @@ module "FunctionApp" {
   source                            = "../../modules/FunctionApp"
   resourcegroupname                 = module.ResourceGroup.rg_name_out
   location                          = var.location
-  service_plan_id                   = module.JAVA_ApplicationServicePlan.app_sp_out
+  service_plan_id                   = module.ApplicationServicePlan.app_sp_out
   storageaccountname                = module.FUNAPP_StorageAccount.sa_name_out
   storage_account_access_key        = module.FUNAPP_StorageAccount.sa_primary_access_key_out
   functionappname                   = var.functionappname
@@ -43,10 +43,10 @@ module "FunctionApp" {
 module "ApplicationServicePlan" {
 
   depends_on = [
-    module.ASP-SHARED-ResourceGroup
+    module.ResourceGroup
   ]
   source            = "../../modules/ApplicationServicePlan"
-  resourcegroupname = module.ASP-SHARED-ResourceGroup.rg_name_out
+  resourcegroupname = module.ResourceGroup.rg_name_out
   serviceplanname   = var.serviceplanname
   location          = var.location
   ostype            = var.ostype
