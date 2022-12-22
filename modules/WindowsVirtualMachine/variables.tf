@@ -14,8 +14,16 @@ variable "resourcegroupname" {
     description = "Resource group name"
 }
 
+variable "subnet_resource_group_name" {
+  
+}
+
 variable "virtualmachine_name" {
   description = "Virtual machine name"
+}
+
+variable "computer_name" {
+  description = "Computer name"
 }
 
 variable "virtual_network_name" {
@@ -25,10 +33,6 @@ variable "virtual_network_name" {
 
 variable "subnet_name" {
   description = "VM Subnet name"
-}
-
-variable "address_prefixes" {
-  description = "VM Subnet address prefixes"  
 }
 
 variable "vm_nic_name" {
@@ -106,10 +110,6 @@ variable "admin_usename" {
 
 variable "admin_password" {
   description = "VM admin user password"  
-}
-
-variable "disable_password_authentication" {
-  description = "VM disable password authentication option"
 }
 
 

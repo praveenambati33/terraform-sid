@@ -20,7 +20,7 @@ resource "azurerm_network_interface" "nic" {
 
 }
 
-resource "azurerm_virtual_machine" "linux_virtualmachine" {
+resource "azurerm_virtual_machine" "windows_virtualmachine" {
 
   depends_on                        = [azurerm_network_interface.nic]
   name                              = var.virtualmachine_name          
@@ -65,7 +65,9 @@ resource "azurerm_virtual_machine" "linux_virtualmachine" {
     admin_password                  = var.admin_password
   }
 
-  os_profile_linux_config {
-    disable_password_authentication = var.disable_password_authentication
+  os_profile_windows_config {
+    provision_vm_agent              = true                                    #if it false VM agent status will not be in Ready State
+    enable_automatic_upgrades       = true
   }
+
 }
