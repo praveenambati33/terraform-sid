@@ -29,8 +29,8 @@ module "FunctionApp" {
   resourcegroupname                 = module.ResourceGroup.rg_name_out
   location                          = var.location
   service_plan_id                   = module.ApplicationServicePlan.app_sp_out
-  storageaccountname                = module.FUNAPP_StorageAccount.sa_name_out
-  storage_account_access_key        = module.FUNAPP_StorageAccount.sa_primary_access_key_out
+  storageaccountname                = module.FUNAPP_StorageAccount.sa_name_out["hphcperfvastorage"]
+  storage_account_access_key        = module.FUNAPP_StorageAccount.sa_primary_access_key_out["hphcperfvastorage"]
   functionappname                   = var.functionappname
   stack_version                     = var.stack_version
   function_app_application_settings = var.function_app_application_settings
