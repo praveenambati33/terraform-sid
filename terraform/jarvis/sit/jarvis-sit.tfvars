@@ -3,7 +3,7 @@ resourcegroupname = "eus-perf-jarvis-virassnt-rg"
 location          = "eastus"
 
 # Storage Account for App Service and App logs
-storageaccountname  = ["hphcperfvastorage"]
+storage_list  = ["hphcperfvastorage"]
 containers_list = []
 
 applicationinsightsname = "HPHCPERFVAReporting"

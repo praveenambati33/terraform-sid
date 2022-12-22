@@ -10,7 +10,7 @@ module "ResourceGroup" {
 module "FUNAPP_StorageAccount" {
 
   source             = "../../modules/StorageAccount"
-  storageaccountname = var.storageaccountname
+  storageaccountname = var.storage_list
   containers_list    = var.containers_list
   resourcegroupname  = module.ResourceGroup.rg_name_out
   location           = var.location
