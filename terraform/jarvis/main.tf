@@ -83,7 +83,6 @@ module "HPPC_AppService" {
 
   depends_on = [
     module.ResourceGroup,
-    module.HPHC_ApplicationInsights,
     module.HPHC_ApplicationServicePlan
   ]
   source                            = "../../modules/AppService"
@@ -93,7 +92,6 @@ module "HPPC_AppService" {
   appservicename                    = var.hphcappservicename
   stack_version                     = var.hphc_stack_version
   app_settings                      = var.app_settings
-  application_insights_key          = module.HPHC_ApplicationInsights.azurerm_application_insights_out
   tags                              = var.tags
 
 }

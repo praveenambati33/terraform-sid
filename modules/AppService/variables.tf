@@ -35,7 +35,3 @@ variable "service_plan_id" {
 variable "app_settings"{
   type = map
 }
-
-variable "application_insights_key" {
-  type = string  
-}

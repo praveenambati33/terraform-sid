@@ -12,7 +12,6 @@ resource "azurerm_windows_web_app" "win-fn" {
     application_stack {
       current_stack = lookup(var.stack_version, "dotnet", null)
     }
-    application_insights_key = var.application_insights_key
   }
 
   tags = var.tags
