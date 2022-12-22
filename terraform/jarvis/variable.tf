@@ -77,7 +77,11 @@ variable "hphcappservicename" {
 }
 
 variable "hphc_stack_version" {
-  type        = string
+  type        = map
   description = "location for the  iwallet resources"
 }
 
+
+variable "app_settings"{
+  type = map
+}
