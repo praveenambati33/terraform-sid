@@ -20,7 +20,7 @@ stack_version   = { dotnet = "3.1" }
 #Application Configuration
 function_app_application_settings = {
 
-  "" = ""
+  "AzureWebJo6bsStorage" = "DefaultEndpointsProtocol=https;AccountName=hphcvastorage;AccountKey=cH599A/qwTxAxRtSWeSI49r3+s622q1i6mmQLVpfO2IHO8O6rRQ6fy8/a7mLiWV+7mKaSshVCanN10Mvi0riCA==;EndpointSuffix=core.windows.net"
 
 }
 
