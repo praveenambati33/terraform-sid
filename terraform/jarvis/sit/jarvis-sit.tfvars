@@ -27,7 +27,7 @@ function_app_application_settings = {
 # Key vault to secure the application sensitive information
 keyvaultname = "HPHCVAPERFKeyVault"
 
-hphcappservicename = "hphcva-perf"
+hphcappservicename = "hphcvaperf"
 hphc_serviceplanname = "HPHCVAperf"
 hphc_applicationinsightsname ="HPHCVAperf3zbkz"
 hphc_stack_version = { dotnet = "v4.0"}
