@@ -4,7 +4,7 @@ location          = "eastus"
 
 # Storage Account for App Service and App logs
 storageaccountname  = ["hphcperfvastorage"]
-fun_containers_list = []
+containers_list = []
 
 applicationinsightsname = "HPHCPERFVAReporting"
 
