@@ -9,13 +9,13 @@ variables:
 #Backend Configuration variables
   - name: terraformVersion                    # <<-- Terraform version
     value: '1.2.0'
-  - name: backendServiceArm                   # <<-- Service Connection Name
+  - name: backendServiceArm                   # <<-- Backend Service Connection Name, where tfstates will get store
     value: 'p32-chub-sc'
   - name: backendAzureRmResourceGroupName     # <<-- Resource Group name to store tfstate file
-    value: 'resourcegroup-tfstate'
+    value: 'eus-hub-central-devops-rg'
   - name: backendAzureRmStorageAccountName    # <<-- Storage Account name to tfstate file
-    value: 'terraformtfstate01'
-  - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already created on azure portal before running pipeline.
+    value: 'eusdevopsstgacc01'
+  - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already on azure portal created before running pipeline.
     value: 'jarvis-sit'
 
 
