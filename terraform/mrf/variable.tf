@@ -37,6 +37,10 @@ variable "function_app_application_settings"{
   type = map
 }
 
+variable "app_settings"{
+  type = map
+}
+
 variable "functionappname" {
  type = string 
 }
