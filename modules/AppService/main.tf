@@ -10,7 +10,7 @@ resource "azurerm_windows_web_app" "win-fn" {
   site_config {
     ftps_state = "FtpsOnly"
     application_stack {
-      current_stack = lookup(var.stack_version, "dotnet", null)
+      dotnet_version = lookup(var.stack_version, "dotnet", null)
     }
   }
 
