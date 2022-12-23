@@ -11,6 +11,33 @@ tags = {
 #Central Hub Resource Group
 centralhub_resourcegroupname = "eus-hub-central-rg"
 
+#Keyvault
+centralhub_keyvaultname = "eus-hub-kv"
+
+# Log Analytics workspace for AI 
+lawworkspacename = "eus-hub-log-analws-02"
+# applicationinsightsname = "eus-s-mrf-fnapp-02" #NA
+
+#RSV
+rsv_name = "eus-hub-central-dns-vm-01-recoveryvault"
+rsv_sku  = "RS0"
+
+#Private DNS Zone
+private_dns_zone_name   = "privatelink.servicebus.windows.net"
+private_dns_a_record_01 = "eus-hub-central-nonprod-qa-sb-01"
+private_dns_a_record_02 = "eus-hub-central-nonprod-sb-01"
+
+#Route Table
+route_table_name = "eus-vpngateway-2-firewall-rt"
+
+#Firewall
+firewall_name = "eus-hub-central-fw01"
+
+#Virtual Network Gateway
+virtual_network_gateway_name            = "eus-hub-central-vng-01"
+local_network_gateway_name              = "eus-hub-central-s2s-lng-01"
+virtual_network_gateway_connection_name = "eus-hub-central-s2s-connection-01"
+
 #CHub Virtual Network
 vnets = {
   vnet1 = {

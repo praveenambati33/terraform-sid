@@ -69,6 +69,60 @@ variable "vmss" {
   default     = {}
 }
 
+variable "publicIps" {
+  description = "For each public IPs, create an object that contain fields"
+  default     = {}
+}
+
+variable "centralhub_keyvaultname" {
+  type        = string
+  description = "The name of the key vault"
+}
+
+variable "lawworkspacename" {
+  type = string
+  description = "Log analytics workspace name"
+}
+
+variable "private_dns_zone_name" {
+  description = "Private DNS zone name"
+}
+
+variable "private_dns_a_record_01" {
+  description = "Private DNS zone A record 1"
+}
+
+variable "private_dns_a_record_02" {
+  description = "Private DNS zone A record 2"
+}
+
+variable "rsv_name" {
+  description = "Recovery Service Vault name"
+}
+
+variable "rsv_sku" {
+  description = "Recovery Service Vault SKU"
+}
+
+variable "route_table_name" {
+  description = "Route Table name"
+}
+
+variable "firewall_name" {
+  description = "Firewall name"
+}
+
+variable "virtual_network_gateway_name" {
+  description = "Virtual network gateway name"
+}
+
+variable "local_network_gateway_name" {
+  description = "Local network gateway name"
+}
+
+variable "virtual_network_gateway_connection_name" {
+  description = "Virtual network gateway Connection name"
+}
 
 #########################################################################################################
 
