@@ -59,6 +59,23 @@ stages :
     dependsOn: [plan]
     condition: succeeded('plan')
     jobs:
+      - job: doSomething
+        displayName:  Do Something
+        steps:
+        - script: echo hello!!
+          displayName: 'run a oneline script'
+      - job: waitForValidation
+        displayName: wait for external validtion
+        dependsOn: doSomething
+        pool: server
+        timeoutInMinutes: 4312
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 1440      
+            inputs:
+              notifyUsers: 'praveen.ambati@nttdata.com'
+              instructions: 'Make this is tested in test environment first'
+              onTimeout: resume
       - job: terraform_apply
         steps:
               - checkout: self
@@ -85,7 +102,6 @@ stages :
                   commandOptions: '-input=false -var-file="./${{ variables.Environment }}/${{ variables.Application }}-${{ variables.Environment }}.tfvars"'
                   environmentServiceNameAzureRM: ${{ variables.environmentServiceNameAzureRM }}
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
-
   - stage: destroy
     jobs:
       - job: terraform_destroy
