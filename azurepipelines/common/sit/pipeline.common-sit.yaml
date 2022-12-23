@@ -55,26 +55,23 @@ stages :
                   environmentServiceNameAzureRM: ${{ variables.environmentServiceNameAzureRM }}
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
 
-  - stage: apply
+  - stage: apply for ${{ variables.Environment }} environment
     dependsOn: [plan]
     condition: succeeded('plan')
     jobs:
-      - job: doSomething
-        displayName:  Do Something
-        steps:
-        - script: echo hello!!
-          displayName: 'run a oneline script'
       - job: waitForValidation
-        displayName: wait for external validtion
-        dependsOn: doSomething
+        displayName: wait for external validation
         pool: server
-        timeoutInMinutes: 4312
+        timeoutInMinutes: 300 # job times out in 5 hours
         steps:
           - task: ManualValidation@0
-            timeoutInMinutes: 1440      
+            timeoutInMinutes: 180  # job times out in 3 hours
             inputs:
-              notifyUsers: 'Praveen.Ambati@point32health.org'
-              instructions: 'Make this is tested in test environment first'
+              notifyUsers: |
+                'Praveen.Ambati@point32health.org'
+                'prashant.sawat@point32health.org'
+                'jitendra.mohan@point32health.org'
+              instructions: 'Terraform apply stage will provision the resources which might impact the infrastructure, as a approver please review `terraform plan` and compare your real infrastructure against your configuration (terrraform code)'
               onTimeout: resume
       - job: terraform_apply
         dependsOn: waitForValidation
