@@ -77,8 +77,8 @@ stages :
               instructions: 'Make this is tested in test environment first'
               onTimeout: resume
       - job: terraform_apply
-        steps:
         dependOn: waitForValidation
+        steps:
               - checkout: self
               - task: TerraformInstaller@0
                 displayName: 'install'
