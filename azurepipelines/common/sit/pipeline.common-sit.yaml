@@ -70,8 +70,7 @@ stages :
           - task: ManualValidation@0
             timeoutInMinutes: 180  # job times out in 3 hours
             inputs:
-              notifyUsers: |
-                'Praveen.Ambati@point32health.org'
+              notifyUsers: 'Praveen.Ambati@point32health.org'
               instructions: 'Terraform apply stage will provision the resources which might impact the infrastructure, as a approver please review `terraform plan` and compare your real infrastructure against your configuration (terrraform code)'
               onTimeout: resume
       - job: terraform_apply
