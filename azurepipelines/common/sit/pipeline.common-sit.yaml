@@ -55,7 +55,7 @@ stages :
                   environmentServiceNameAzureRM: ${{ variables.environmentServiceNameAzureRM }}
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
 
-  - stage: apply for SIT environment
+  - stage: apply_for_SIT_environment
     displayName: Apply for ${{ variables.Environment }} environment
     dependsOn: [plan]
     condition: succeeded('plan')
