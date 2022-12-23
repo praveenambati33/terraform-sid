@@ -73,11 +73,12 @@ stages :
           - task: ManualValidation@0
             timeoutInMinutes: 1440      
             inputs:
-              notifyUsers: 'praveen.ambati@nttdata.com'
+              notifyUsers: 'praveen.ambati@point32health.org'
               instructions: 'Make this is tested in test environment first'
               onTimeout: resume
       - job: terraform_apply
         steps:
+        dependOn: waitForValidation
               - checkout: self
               - task: TerraformInstaller@0
                 displayName: 'install'
