@@ -79,9 +79,29 @@ variable "centralhub_keyvaultname" {
   description = "The name of the key vault"
 }
 
+variable "storageaccount_01" {
+  description = "Storage account list 1"
+}
+
+variable "containers_list01" {
+  description = "Storage account container list 1"
+}
+
+variable "storageaccount_02" {
+  description = "Storage account list 2"
+}
+
+variable "containers_list02" {
+  description = "Storage account container list 2"
+}
+
 variable "lawworkspacename" {
-  type = string
+  type        = string
   description = "Log analytics workspace name"
+}
+
+variable "law_solution_name" {
+  description = "Log analytics workspace Solution name"
 }
 
 variable "private_dns_zone_name" {
@@ -122,6 +142,30 @@ variable "local_network_gateway_name" {
 
 variable "virtual_network_gateway_connection_name" {
   description = "Virtual network gateway Connection name"
+}
+
+variable "bastion_name" {
+  description = "Bastion name"
+}
+
+#Event Hub 
+variable "eventhubstorageaccountname" {
+  type = string
+}
+
+variable "eventhubcontainers_list" {
+  type = list(any)
+}
+
+variable "eventhub_namespace_name" {
+  type = string
+}
+
+variable "eventhubs" {
+  type = map(object({
+    eventhubname        = string
+    blob_container_name = string
+  }))
 }
 
 #########################################################################################################

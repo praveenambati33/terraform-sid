@@ -154,6 +154,57 @@ module "LogAnalyticsWorkspace" {
 
 }
 
+data "azurerm_log_analytics_workspace" "LAW" {
+
+  depends_on          = [module.LogAnalyticsWorkspace]
+  name                = var.lawworkspacename
+  resource_group_name = var.centralhub_resourcegroupname
+
+}
+
+#LAW Solution
+resource "azurerm_log_analytics_solution" "example" {
+
+  depends_on            = [data.azurerm_log_analytics_workspace.LAW]
+  solution_name         = var.law_solution_name
+  location              = var.location
+  resource_group_name   = var.centralhub_resourcegroupname
+  workspace_resource_id = data.azurerm_log_analytics_workspace.LAW.id
+  workspace_name        = var.lawworkspacename
+  tags                  = var.tags
+
+  plan {
+    publisher = "Microsoft"
+    product   = "OMSGallery/NetworkMonitoring"
+  }
+
+}
+
+#Storage Account
+module "CHub_StorageAccount01" {
+
+  depends_on        = [module.CHub_ResourceGroup]
+  source            = "./modules/StorageAccount"
+  storage_list      = var.storageaccount_01
+  containers_list   = var.containers_list01
+  resourcegroupname = var.centralhub_resourcegroupname
+  location          = var.location
+  tags              = var.tags
+
+}
+
+module "CHub_StorageAccount02" {
+
+  depends_on        = [module.CHub_ResourceGroup]
+  source            = "./modules/StorageAccount"
+  storage_list      = var.storageaccount_02
+  containers_list   = var.containers_list02
+  resourcegroupname = var.centralhub_resourcegroupname
+  location          = var.location
+  tags              = var.tags
+
+}
+
 #Private DNS Zone
 resource "azurerm_private_dns_zone" "private_dns_zone" {
 
@@ -353,6 +404,59 @@ resource "azurerm_virtual_network_gateway_connection" "virtual_network_gateway_c
 
   shared_key = "D/sHZpxAz4Xd7vjC5rOyth+joWD+RXcn"
   tags       = var.tags
+
+}
+
+data "azurerm_subnet" "bastion_subnet" {
+
+  depends_on           = [module.CHub_subnet]
+  name                 = "AzureBastionSubnet"
+  virtual_network_name = "eus-hub-central-vnet-01"
+  resource_group_name  = var.centralhub_resourcegroupname
+
+}
+
+data "azurerm_public_ip" "bastion_publicIp" {
+
+  depends_on          = [module.CHub_PublicIP]
+  name                = "eus-hub-central-vnet-01-pip"
+  resource_group_name = var.centralhub_resourcegroupname
+
+}
+
+#Bastion
+resource "azurerm_bastion_host" "bastion" {
+
+  depends_on = [
+    module.CHub_ResourceGroup,
+    data.azurerm_public_ip.bastion_publicIp,
+    data.azurerm_subnet.bastion_subnet
+  ]
+  name                = var.bastion_name
+  location            = var.location
+  resource_group_name = var.centralhub_resourcegroupname
+  tags                = var.tags
+
+  ip_configuration {
+    name                 = "IpConf"
+    subnet_id            = data.azurerm_subnet.bastion_subnet.id
+    public_ip_address_id = data.azurerm_public_ip.bastion_publicIp.id
+  }
+
+}
+
+#Event Hub
+module "EventHub" {
+
+  depends_on                 = [module.CHub_ResourceGroup]
+  source                     = "./modules/EventHub"
+  resourcegroupname          = var.centralhub_resourcegroupname
+  location                   = var.location
+  eventhubs                  = var.eventhubs
+  iwalletensname             = var.eventhub_namespace_name
+  eventhubstorageaccountname = var.eventhubstorageaccountname
+  eventhubcontainers_list    = var.eventhubcontainers_list
+  tags                       = var.tags
 
 }
 

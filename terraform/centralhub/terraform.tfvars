@@ -15,7 +15,8 @@ centralhub_resourcegroupname = "eus-hub-central-rg"
 centralhub_keyvaultname = "eus-hub-kv"
 
 # Log Analytics workspace for AI 
-lawworkspacename = "eus-hub-log-analws-02"
+lawworkspacename  = "eus-hub-log-analws-02"
+law_solution_name = "NetworkMonitoring"
 # applicationinsightsname = "eus-s-mrf-fnapp-02" #NA
 
 #RSV
@@ -37,6 +38,34 @@ firewall_name = "eus-hub-central-fw01"
 virtual_network_gateway_name            = "eus-hub-central-vng-01"
 local_network_gateway_name              = "eus-hub-central-s2s-lng-01"
 virtual_network_gateway_connection_name = "eus-hub-central-s2s-connection-01"
+
+#Bastion
+bastion_name = "eus-hub-central-vnet-01-bastion"
+
+#Event Hub Namespace and Event Hubs
+eventhub_namespace_name = "eus-hub-central-eventhub01"
+
+eventhubs = {
+  "hub1" = {
+    eventhubname        = "eus-chub-firewall-eventhub"
+    blob_container_name = "eventhubcontainer"
+  }
+}
+
+eventhubstorageaccountname = "euseventhubstorage01"
+eventhubcontainers_list = [
+  { name = "eventhubcontainer", access_type = "private" }
+]
+
+# Storage Accounts
+storageaccount_01 = ["euscloudshellstg"]
+containers_list01 = [
+  { name = "poc-nva-templates", access_type = "container" },
+  { name = "cert", access_type = "private" }
+]
+
+storageaccount_02 = ["euscloudshellstg"]
+containers_list02 = []
 
 #CHub Virtual Network
 vnets = {
