@@ -168,9 +168,9 @@ variable "eventhubs" {
   }))
 }
 
-#########################################################################################################
+#####################################################################################################################################################
 
-#########################################################################################################
+######################################################################################################################################################
 
 variable "centralhub_virtualmachine_rg" {
   type        = string
@@ -208,7 +208,137 @@ variable "virtualmachine_rg_vms" {
   default     = {}
 }
 
-########################################################################################################
+#################################################################################################################################################
+
+#################################################################################################################################################
+
+#Central Hub Prod RG
+variable "centralhub_prod_rg" {
+  type        = string
+  description = "Resource group name"
+}
+
+variable "centralhub_prod_nsgs" {
+  type = map(object({
+    nsg_name = string
+    nsg_rules = list(object({
+      name                                       = string
+      description                                = string
+      priority                                   = number
+      direction                                  = string
+      access                                     = string
+      protocol                                   = string
+      source_port_range                          = string
+      source_port_ranges                         = list(string)
+      destination_port_range                     = string
+      destination_port_ranges                    = list(string)
+      source_address_prefix                      = string
+      source_address_prefixes                    = list(string)
+      source_application_security_group_ids      = list(string)
+      destination_address_prefix                 = string
+      destination_address_prefixes               = list(string)
+      destination_application_security_group_ids = list(string)
+    }))
+  }))
+
+  description = "Network Security Groups and NSG rules"
+}
+
+variable "centralhub_prod_publicIps" {
+  description = "For each public IPs, create an object that contain fields"
+  default     = {}
+}
+
+variable "centralhub_prod_storageaccount" {
+  description = "Storage account list 1"
+}
+
+variable "centralhub_prod_containers_list" {
+  description = "Storage account container list 1"
+}
+
+variable "centralhub_prod_applicationinsightsname" {
+  description = "Central Hub Prod Application Insight name"
+}
+
+variable "centralhub_prod_applicationgateway_name" {
+  description = "Central Hub Prod Application Gateway name"
+}
+
+variable "centralhub_prod_servicebus_namespace_name" {
+  description = "Central Hub Prod Service Bus Namespace name"
+}
+
+variable "centralhub_prod_api_management_service_name" {
+  description = "Central Hub Prod API Management Service name"
+}
+
+
+####################################################################################################################################################
+
+####################################################################################################################################################
+
+#Central Hub SIT RG
+variable "centralhub_sit_rg" {
+  type        = string
+  description = "Resource group name"
+}
+
+variable "centralhub_sit_nsgs" {
+  type = map(object({
+    nsg_name = string
+    nsg_rules = list(object({
+      name                                       = string
+      description                                = string
+      priority                                   = number
+      direction                                  = string
+      access                                     = string
+      protocol                                   = string
+      source_port_range                          = string
+      source_port_ranges                         = list(string)
+      destination_port_range                     = string
+      destination_port_ranges                    = list(string)
+      source_address_prefix                      = string
+      source_address_prefixes                    = list(string)
+      source_application_security_group_ids      = list(string)
+      destination_address_prefix                 = string
+      destination_address_prefixes               = list(string)
+      destination_application_security_group_ids = list(string)
+    }))
+  }))
+
+  description = "Network Security Groups and NSG rules"
+}
+
+variable "centralhub_sit_publicIps" {
+  description = "For each public IPs, create an object that contain fields"
+  default     = {}
+}
+
+variable "centralhub_sit_storageaccount" {
+  description = "Storage account list 1"
+}
+
+variable "centralhub_sit_containers_list" {
+  description = "Storage account container list 1"
+}
+
+variable "centralhub_sit_applicationinsightsname" {
+  description = "Central Hub Prod Application Insight name"
+}
+
+variable "centralhub_sit_applicationgateway_name" {
+  description = "Central Hub Prod Application Gateway name"
+}
+
+variable "centralhub_sit_servicebus_namespace_name" {
+  description = "Central Hub Prod Service Bus Namespace name"
+}
+
+variable "centralhub_sit_api_management_service_name" {
+  description = "Central Hub Prod API Management Service name"
+}
+
 
 
 

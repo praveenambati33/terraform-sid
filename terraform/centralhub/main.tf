@@ -460,9 +460,9 @@ module "EventHub" {
 
 }
 
-#########################################################################################################################################
+########################################################################################################################################################
 
-#########################################################################################################################################
+########################################################################################################################################################
 
 #Resource Group
 module "virtualmachine_rg_ResourceGroup" {
@@ -488,4 +488,631 @@ module "virtualmachine_rg_nsg" {
   nsg_rules = lookup(each.value, "nsg_rules", [])
 
 }
+
+#############################################################################################################################################################
+
+#############################################################################################################################################################
+
+#Prod Resource Group
+module "Centralhub_Prod_rg" {
+
+  source            = "./modules/ResourceGroup"
+  resourcegroupname = var.centralhub_prod_rg
+  location          = var.location
+  tags              = var.tags
+
+}
+
+#centralhub_prod_rg NSG
+module "Centralhub_Prod_nsg" {
+
+  depends_on        = [module.Centralhub_Prod_rg]
+  for_each          = var.centralhub_prod_nsgs
+  source            = "./modules/NetworkSecurityGroup"
+  location          = var.location
+  resourcegroupname = var.centralhub_prod_rg
+  nsg_name          = each.value["nsg_name"]
+  tags              = var.tags
+
+  nsg_rules = lookup(each.value, "nsg_rules", [])
+
+}
+
+#Storage Account
+module "Centralhub_Prod_StorageAccount" {
+
+  depends_on        = [module.Centralhub_Prod_rg]
+  source            = "./modules/StorageAccount"
+  storage_list      = var.centralhub_prod_storageaccount
+  containers_list   = var.centralhub_prod_containers_list
+  resourcegroupname = var.centralhub_prod_rg
+  location          = var.location
+  tags              = var.tags
+
+}
+
+#Public IP Address
+module "Centralhub_Prod_PublicIP" {
+
+  depends_on         = [module.Centralhub_Prod_rg]
+  for_each           = var.centralhub_prod_publicIps
+  source             = "./modules/PublicIP"
+  resourcegroupname  = var.centralhub_prod_rg
+  location           = var.location
+  public_ip_name     = each.value["public_ip_name"]
+  allocation_method  = lookup(each.value, "allocation_method", "Static")
+  public_ip_sku      = lookup(each.value, "public_ip_sku", "Basic")
+  public_ip_sku_tier = lookup(each.value, "public_ip_sku_tier", "Regional")
+  tags               = var.tags
+
+}
+
+#Application Insight
+module "Centralhub_Prod_ApplicationInsights" {
+
+  depends_on = [
+    module.Centralhub_Prod_rg,
+    module.LogAnalyticsWorkspace
+  ]
+  source                  = "./modules/ApplicationInsights"
+  resourcegroupname       = var.centralhub_prod_rg
+  location                = var.location
+  applicationinsightsname = var.centralhub_prod_applicationinsightsname
+  workspace_id            = module.LogAnalyticsWorkspace.azurerm_log_analytics_workspace_output
+  tags                    = var.tags
+
+}
+
+#Service Bus Namespace
+resource "azurerm_servicebus_namespace" "centralhub_prod_servicebus_namespace" {
+
+  depends_on          = [module.Centralhub_Prod_rg]
+  name                = var.centralhub_prod_servicebus_namespace_name
+  location            = var.location
+  resource_group_name = var.centralhub_prod_rg
+  sku                 = "Premium"
+  capacity            = 1
+  tags                = var.tags
+
+}
+
+resource "azurerm_servicebus_namespace_authorization_rule" "centralhub_prod_servicebus_namespace_authorization_rule_01" {
+
+  depends_on   = [azurerm_servicebus_namespace.centralhub_prod_servicebus_namespace]
+  name         = "relay-policy"
+  namespace_id = azurerm_servicebus_namespace.centralhub_prod_servicebus_namespace.id
+  listen       = true
+  send         = true
+  manage       = true
+
+}
+resource "azurerm_servicebus_namespace_authorization_rule" "centralhub_prod_servicebus_namespace_authorization_rule_02" {
+
+  depends_on   = [azurerm_servicebus_namespace.centralhub_prod_servicebus_namespace]
+  name         = "RootManageSharedAccessKey"
+  namespace_id = azurerm_servicebus_namespace.centralhub_prod_servicebus_namespace.id
+  listen       = true
+  send         = true
+  manage       = true
+
+}
+resource "azurerm_servicebus_namespace_authorization_rule" "centralhub_prod_servicebus_namespace_authorization_rule_03" {
+
+  depends_on   = [azurerm_servicebus_namespace.centralhub_prod_servicebus_namespace]
+  name         = "SimplifySASKey"
+  namespace_id = azurerm_servicebus_namespace.centralhub_prod_servicebus_namespace.id
+  listen       = true
+  send         = true
+  manage       = true
+
+}
+
+resource "azurerm_servicebus_namespace_network_rule_set" "centralhub_prod_servicebus_namespace_network_rule_set" {
+
+  depends_on                    = [azurerm_servicebus_namespace.centralhub_prod_servicebus_namespace]
+  namespace_id                  = azurerm_servicebus_namespace.centralhub_prod_servicebus_namespace.id
+  default_action                = "Deny"
+  public_network_access_enabled = true
+  ip_rules                      = ["155.49.0.0/16", "52.146.56.211", "136.226.75.115", "136.226.50.0/23", "165.225.220.0/23", "20.119.16.10"]
+
+}
+
+#API Management Service
+resource "azurerm_api_management" "centralhub_prod_api_management_service" {
+
+  depends_on                = [module.Centralhub_Prod_rg]
+  name                      = var.centralhub_prod_api_management_service_name
+  location                  = var.location
+  resource_group_name       = var.centralhub_prod_rg
+  publisher_name            = "HPHC"
+  publisher_email           = "hemant_kohli@harvardpilgrim.org"
+  notification_sender_email = "apimgmt-noreply@mail.windowsazure.com"
+  sku_name                  = "Developer_1"
+
+}
+
+data "azurerm_subnet" "centralhub_prod_application_gateway_subnet" {
+
+  depends_on           = [module.CHub_subnet]
+  name                 = "eus-prod-snet-agw-01"
+  virtual_network_name = "eus-hub-central-vnet-01"
+  resource_group_name  = var.centralhub_resourcegroupname
+
+}
+
+data "azurerm_public_ip" "centralhub_prod_application_gateway_publicIp" {
+
+  depends_on          = [module.Centralhub_Prod_PublicIP]
+  name                = "eus-hub-central-prod-agw-pip-01"
+  resource_group_name = var.centralhub_prod_rg
+
+}
+
+#Application Gateway
+resource "azurerm_application_gateway" "centralhub_prod_application_gateway" {
+
+  depends_on = [
+    module.Centralhub_Prod_rg,
+    data.azurerm_subnet.centralhub_prod_application_gateway_subnet,
+    data.azurerm_public_ip.centralhub_prod_application_gateway_publicIp
+  ]
+  name                = var.centralhub_prod_applicationgateway_name
+  resource_group_name = var.centralhub_prod_rg
+  location            = var.location
+  tags                = var.tags
+
+  sku {
+    name     = "WAF_Medium"
+    tier     = "WAF"
+    capacity = 2
+  }
+
+  gateway_ip_configuration {
+    name      = "appGatewayIpConfig"
+    subnet_id = data.azurerm_subnet.centralhub_prod_application_gateway_subnet.id
+  }
+
+  frontend_port {
+    name = "port_443"
+    port = 443
+  }
+  frontend_port {
+    name = "port_8083"
+    port = 8083
+  }
+  frontend_port {
+    name = "port_8084"
+    port = 8084
+  }
+  frontend_port {
+    name = "port_80"
+    port = 80
+  }
+
+  frontend_ip_configuration {
+    name                 = "appGwPublicFrontendIp"
+    public_ip_address_id = data.azurerm_public_ip.centralhub_prod_application_gateway_publicIp.id
+  }
+
+  http_listener { #<<--- Need Cert for HTTPS listeners. Need to provide all the details for cert.
+    name                           = "apigw-p-listener"
+    frontend_ip_configuration_name = "appGwPublicFrontendIp"
+    frontend_port_name             = "port_443"
+    protocol                       = "Https"
+    host_name                      = "apigw.harvardpilgrim.org"
+    ssl_certificate_name           = "appgwcertprod_pfx"
+  }
+  http_listener {
+    name                           = "digitalicon-p-listener"
+    frontend_ip_configuration_name = "appGwPublicFrontendIp"
+    frontend_port_name             = "port_443"
+    protocol                       = "Https"
+    host_name                      = "icons.point32health.org"
+    ssl_certificate_name           = "icons.point32health.org-pfx"
+  }
+  http_listener {
+    name                           = "digitalicon-p-http-listner"
+    frontend_ip_configuration_name = "appGwPublicFrontendIp"
+    frontend_port_name             = "port_80"
+    protocol                       = "Http"
+    host_name                      = "icons.point32health.org"
+  }
+
+  backend_address_pool {
+    name         = "apimbackend"
+    ip_addresses = ["172.30.254.117"]
+  }
+  backend_address_pool {
+    name         = "digital-icon-prod-vm"
+    ip_addresses = ["172.29.167.196"]
+  }
+
+  backend_http_settings {
+    name                  = "apimsetting"
+    cookie_based_affinity = "Disabled"
+    affinity_cookie_name  = "ApplicationGatewayAffinity"
+    port                  = 443
+    protocol              = "Https"
+    request_timeout       = 180
+    host_name             = "apigw.harvardpilgrim.org"
+    probe_name            = "apimprobe"
+  }
+  backend_http_settings {
+    name                  = "digital-icon-httpsetting"
+    cookie_based_affinity = "Disabled"
+    affinity_cookie_name  = "ApplicationGatewayAffinity"
+    port                  = 443
+    protocol              = "Https"
+    request_timeout       = 60
+    host_name             = "icons.point32health.org"
+    probe_name            = "digitalicon-probe"
+  }
+
+  redirect_configuration {
+    name                 = "digitalicon-p-http-rule"
+    redirect_type        = "Permanent"
+    target_listener_name = "digitalicon-p-listener"
+    include_path         = true
+    include_query_string = true
+  }
+
+  request_routing_rule {
+    name                       = "apigw-p-rule"
+    rule_type                  = "PathBasedRouting"
+    http_listener_name         = "apigw-p-listener"
+    backend_http_settings_name = "apimsetting"
+  }
+  request_routing_rule {
+    name                        = "digitalicon-p-http-rule"
+    rule_type                   = "Basic"
+    http_listener_name          = "digitalicon-p-http-listner"
+    redirect_configuration_name = "digitalicon-p-http-rule"
+  }
+  request_routing_rule {
+    name                       = "digital-p-https-rule"
+    rule_type                  = "Basic"
+    http_listener_name         = "digitalicon-p-listener"
+    backend_address_pool_name  = "digital-icon-prod-vm"
+    backend_http_settings_name = "digital-icon-httpsetting"
+  }
+
+  probe {
+    name                = "apimprobe"
+    protocol            = "Https"
+    host                = "apigw.harvardpilgrim.org"
+    path                = "/status-0123456789abcdef"
+    interval            = 30
+    timeout             = 120
+    unhealthy_threshold = 8
+  }
+  probe {
+    name                = "digitalicon-probe"
+    protocol            = "Https"
+    host                = "icons.point32health.org"
+    path                = "/status-0123456789abcdef"
+    interval            = 30
+    timeout             = 120
+    unhealthy_threshold = 3
+  }
+
+}
+
+
+####################################################################################################################################################################
+
+####################################################################################################################################################################
+
+#Sit Resource Group
+module "Centralhub_Sit_rg" {
+
+  source            = "./modules/ResourceGroup"
+  resourcegroupname = var.centralhub_sit_rg
+  location          = var.location
+  tags              = var.tags
+
+}
+
+#centralhub_sit_rg NSG
+module "Centralhub_Sit_nsg" {
+
+  depends_on        = [module.Centralhub_Sit_rg]
+  for_each          = var.centralhub_sit_nsgs
+  source            = "./modules/NetworkSecurityGroup"
+  location          = var.location
+  resourcegroupname = var.centralhub_sit_rg
+  nsg_name          = each.value["nsg_name"]
+  tags              = var.tags
+
+  nsg_rules = lookup(each.value, "nsg_rules", [])
+
+}
+
+#Storage Account
+module "Centralhub_Sit_StorageAccount" {
+
+  depends_on        = [module.Centralhub_Sit_rg]
+  source            = "./modules/StorageAccount"
+  storage_list      = var.centralhub_sit_storageaccount
+  containers_list   = var.centralhub_sit_containers_list
+  resourcegroupname = var.centralhub_sit_rg
+  location          = var.location
+  tags              = var.tags
+
+}
+
+#Public IP Address
+module "Centralhub_Sit_PublicIP" {
+
+  depends_on         = [module.Centralhub_Sit_rg]
+  for_each           = var.centralhub_sit_publicIps
+  source             = "./modules/PublicIP"
+  resourcegroupname  = var.centralhub_sit_rg
+  location           = var.location
+  public_ip_name     = each.value["public_ip_name"]
+  allocation_method  = lookup(each.value, "allocation_method", "Static")
+  public_ip_sku      = lookup(each.value, "public_ip_sku", "Basic")
+  public_ip_sku_tier = lookup(each.value, "public_ip_sku_tier", "Regional")
+  tags               = var.tags
+
+}
+
+#Application Insight
+module "Centralhub_Sit_ApplicationInsights" {
+
+  depends_on = [
+    module.Centralhub_Sit_rg,
+    module.LogAnalyticsWorkspace
+  ]
+  source                  = "./modules/ApplicationInsights"
+  resourcegroupname       = var.centralhub_sit_rg
+  location                = var.location
+  applicationinsightsname = var.centralhub_sit_applicationinsightsname
+  workspace_id            = module.LogAnalyticsWorkspace.azurerm_log_analytics_workspace_output
+  tags                    = var.tags
+
+}
+
+#Service Bus Namespace
+resource "azurerm_servicebus_namespace" "centralhub_sit_servicebus_namespace" {
+
+  depends_on          = [module.Centralhub_Sit_rg]
+  name                = var.centralhub_sit_servicebus_namespace_name
+  location            = var.location
+  resource_group_name = var.centralhub_sit_rg
+  sku                 = "Premium"
+  capacity            = 1
+  tags                = var.tags
+
+}
+
+resource "azurerm_servicebus_namespace_authorization_rule" "centralhub_sit_servicebus_namespace_authorization_rule_01" {
+
+  depends_on   = [azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace]
+  name         = "relay-policy"
+  namespace_id = azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace.id
+  listen       = true
+  send         = true
+  manage       = true
+
+}
+resource "azurerm_servicebus_namespace_authorization_rule" "centralhub_sit_servicebus_namespace_authorization_rule_02" {
+
+  depends_on   = [azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace]
+  name         = "RootManageSharedAccessKey"
+  namespace_id = azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace.id
+  listen       = true
+  send         = true
+  manage       = true
+
+}
+resource "azurerm_servicebus_namespace_authorization_rule" "centralhub_sit_servicebus_namespace_authorization_rule_03" {
+
+  depends_on   = [azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace]
+  name         = "ebssitsaskey"
+  namespace_id = azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace.id
+  listen       = true
+  send         = true
+  manage       = true
+
+}
+resource "azurerm_servicebus_namespace_authorization_rule" "centralhub_sit_servicebus_namespace_authorization_rule_04" {
+
+  depends_on   = [azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace]
+  name         = "PhoneixSITIntSASKey"
+  namespace_id = azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace.id
+  listen       = true
+  send         = true
+
+}
+
+resource "azurerm_servicebus_namespace_network_rule_set" "centralhub_sit_servicebus_namespace_network_rule_set" {
+
+  depends_on                    = [azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace]
+  namespace_id                  = azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace.id
+  default_action                = "Deny"
+  public_network_access_enabled = true
+  ip_rules                      = ["155.49.0.0/16", "165.225.38.0/23", "165.225.8.0/23", "165.225.39.69", "165.225.209.38", "98.144.181.36", "192.181.104.8", "73.154.208.164", "24.1.4.228", "155.49.211.21", "172.19.94.224", "155.49.202.42", "165.225.221.43", "165.225.123.34", "172.29.4.164", "52.146.56.211", "172.29.4.128/25", "172.29.4.0/25", "52.146.56.211", "165.225.220.123", "155.49.28.114", "155.49.28.115", "155.49.211.82", "155.49.149.63", "155.49.203.134", "136.226.75.101", "136.226.75.115", "155.49.148.56" ]
+
+}
+
+#API Management Service
+resource "azurerm_api_management" "centralhub_sit_api_management_service" {
+
+  depends_on                = [module.Centralhub_Sit_rg]
+  name                      = var.centralhub_sit_api_management_service_name
+  location                  = var.location
+  resource_group_name       = var.centralhub_sit_rg
+  publisher_name            = "HPHC"
+  publisher_email           = "hemant_kohli@harvardpilgrim.org"
+  notification_sender_email = "apimgmt-noreply@mail.windowsazure.com"
+  sku_name                  = "Developer_1"
+
+}
+
+data "azurerm_subnet" "centralhub_sit_application_gateway_subnet" {
+
+  depends_on           = [module.CHub_subnet]
+  name                 = "eus-prod-snet-agw-01"
+  virtual_network_name = "eus-hub-central-vnet-01"
+  resource_group_name  = var.centralhub_resourcegroupname
+
+}
+
+data "azurerm_public_ip" "centralhub_sit_application_gateway_publicIp" {
+
+  depends_on          = [module.Centralhub_Sit_PublicIP]
+  name                = "eus-hub-central-prod-agw-pip-01"
+  resource_group_name = var.centralhub_sit_rg
+
+}
+
+#Application Gateway
+resource "azurerm_application_gateway" "centralhub_sit_application_gateway" {
+
+  depends_on = [
+    module.Centralhub_Sit_rg,
+    data.azurerm_subnet.centralhub_sit_application_gateway_subnet,
+    data.azurerm_public_ip.centralhub_sit_application_gateway_publicIp
+  ]
+  name                = var.centralhub_sit_applicationgateway_name
+  resource_group_name = var.centralhub_sit_rg
+  location            = var.location
+  tags                = var.tags
+
+  sku {
+    name     = "WAF_Medium"
+    tier     = "WAF"
+    capacity = 2
+  }
+
+  gateway_ip_configuration {
+    name      = "appGatewayIpConfig"
+    subnet_id = data.azurerm_subnet.centralhub_sit_application_gateway_subnet.id
+  }
+
+  frontend_port {
+    name = "port_443"
+    port = 443
+  }
+  frontend_port {
+    name = "port_8083"
+    port = 8083
+  }
+  frontend_port {
+    name = "port_8084"
+    port = 8084
+  }
+  frontend_port {
+    name = "port_80"
+    port = 80
+  }
+
+  frontend_ip_configuration {
+    name                 = "appGwPublicFrontendIp"
+    public_ip_address_id = data.azurerm_public_ip.centralhub_sit_application_gateway_publicIp.id
+  }
+
+  http_listener { #<<--- Need Cert for HTTPS listeners. Need to provide all the details for cert.
+    name                           = "apigw-p-listener"
+    frontend_ip_configuration_name = "appGwPublicFrontendIp"
+    frontend_port_name             = "port_443"
+    protocol                       = "Https"
+    host_name                      = "apigw.harvardpilgrim.org"
+    ssl_certificate_name           = "appgwcertprod_pfx"
+  }
+  http_listener {
+    name                           = "digitalicon-p-listener"
+    frontend_ip_configuration_name = "appGwPublicFrontendIp"
+    frontend_port_name             = "port_443"
+    protocol                       = "Https"
+    host_name                      = "icons.point32health.org"
+    ssl_certificate_name           = "icons.point32health.org-pfx"
+  }
+  http_listener {
+    name                           = "digitalicon-p-http-listner"
+    frontend_ip_configuration_name = "appGwPublicFrontendIp"
+    frontend_port_name             = "port_80"
+    protocol                       = "Http"
+    host_name                      = "icons.point32health.org"
+  }
+
+  backend_address_pool {
+    name         = "apimbackend"
+    ip_addresses = ["172.30.254.117"]
+  }
+  backend_address_pool {
+    name         = "digital-icon-prod-vm"
+    ip_addresses = ["172.29.167.196"]
+  }
+
+  backend_http_settings {
+    name                  = "apimsetting"
+    cookie_based_affinity = "Disabled"
+    affinity_cookie_name  = "ApplicationGatewayAffinity"
+    port                  = 443
+    protocol              = "Https"
+    request_timeout       = 180
+    host_name             = "apigw.harvardpilgrim.org"
+    probe_name            = "apimprobe"
+  }
+  backend_http_settings {
+    name                  = "digital-icon-httpsetting"
+    cookie_based_affinity = "Disabled"
+    affinity_cookie_name  = "ApplicationGatewayAffinity"
+    port                  = 443
+    protocol              = "Https"
+    request_timeout       = 60
+    host_name             = "icons.point32health.org"
+    probe_name            = "digitalicon-probe"
+  }
+
+  redirect_configuration {
+    name                 = "digitalicon-p-http-rule"
+    redirect_type        = "Permanent"
+    target_listener_name = "digitalicon-p-listener"
+    include_path         = true
+    include_query_string = true
+  }
+
+  request_routing_rule {
+    name                       = "apigw-p-rule"
+    rule_type                  = "PathBasedRouting"
+    http_listener_name         = "apigw-p-listener"
+    backend_http_settings_name = "apimsetting"
+  }
+  request_routing_rule {
+    name                        = "digitalicon-p-http-rule"
+    rule_type                   = "Basic"
+    http_listener_name          = "digitalicon-p-http-listner"
+    redirect_configuration_name = "digitalicon-p-http-rule"
+  }
+  request_routing_rule {
+    name                       = "digital-p-https-rule"
+    rule_type                  = "Basic"
+    http_listener_name         = "digitalicon-p-listener"
+    backend_address_pool_name  = "digital-icon-prod-vm"
+    backend_http_settings_name = "digital-icon-httpsetting"
+  }
+
+  probe {
+    name                = "apimprobe"
+    protocol            = "Https"
+    host                = "apigw.harvardpilgrim.org"
+    path                = "/status-0123456789abcdef"
+    interval            = 30
+    timeout             = 120
+    unhealthy_threshold = 8
+  }
+  probe {
+    name                = "digitalicon-probe"
+    protocol            = "Https"
+    host                = "icons.point32health.org"
+    path                = "/status-0123456789abcdef"
+    interval            = 30
+    timeout             = 120
+    unhealthy_threshold = 3
+  }
+
+}
+
 

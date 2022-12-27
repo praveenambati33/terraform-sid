@@ -497,7 +497,7 @@ vmss = {
 
 ###############################################################################################################################################################################################################
 
-#Central Hub Resource Group
+#Central Hub Virtual Machine Resource Group
 centralhub_virtualmachine_rg = "eus-hub-central-virtualmachine-rg"
 
 virtualmachine_rg_nsgs = {
@@ -583,3 +583,709 @@ virtualmachine_rg_vms = {
     admin_password = "dnsadmin@123"
   }
 }
+
+##########################################################################################################################################################################
+
+##########################################################################################################################################################################
+
+#Central Hub PROD Resource Group
+centralhub_prod_rg = "eus-hub-central-prod-rg"
+
+# Storage Accounts
+centralhub_prod_storageaccount = ["eushubcentralprodrgdiag"]
+centralhub_prod_containers_list = [
+  { name = "vpntroubleshoot", access_type = "private" },
+  { name = "certs", access_type = "private" },
+  { name = "insights-metrics-pt1m", access_type = "private" },
+  { name = "insights-logs-applicationgatewayaccesslog", access_type = "private" },
+  { name = "insights-logs-applicationgatewayfirewalllog", access_type = "private" },
+  { name = "insights-logs-applicationgatewayperformancelog", access_type = "private" }
+]
+
+centralhub_prod_applicationinsightsname = "eus-prod-chub-apim-ai"
+
+centralhub_prod_applicationgateway_name = "eus-hub-central-prod-agw-01"
+
+centralhub_prod_servicebus_namespace_name = "eus-hub-central-prod-sb-01"
+
+centralhub_prod_api_management_service_name = "eus-hub-central-prod-apim-01"
+
+centralhub_prod_nsgs = {
+  nsg1 = {
+    nsg_name = "eus-p-hub-vm-01-nsg"
+
+    nsg_rules = [
+      {
+        name                                       = "Port_443_IB"
+        description                                = null
+        priority                                   = 1000
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "443"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_80_IB"
+        description                                = null
+        priority                                   = 1002
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "80"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_8080_IB"
+        description                                = null
+        priority                                   = 1004
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "8080"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_65503to65534_IB"
+        description                                = null
+        priority                                   = 1006
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "65503-65534"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_3443_APIEndPoint"
+        description                                = null
+        priority                                   = 1008
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "3443"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_6381to6383_IB"
+        description                                = null
+        priority                                   = 1011
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "6381-6383"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_443_OB"
+        description                                = null
+        priority                                   = 1001
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "443"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_80_OB"
+        description                                = null
+        priority                                   = 1003
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "80"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_8080_OB"
+        description                                = null
+        priority                                   = 1005
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "8080"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_65503to65534_OB"
+        description                                = null
+        priority                                   = 1007
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "65503-65534"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_25_OB"
+        description                                = null
+        priority                                   = 1009
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "25"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_587_OB"
+        description                                = null
+        priority                                   = 1010
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "587"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_25028"
+        description                                = null
+        priority                                   = 1012
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "25028"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_6381to6383"
+        description                                = null
+        priority                                   = 1013
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "6381-6383"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_1886_OB"
+        description                                = null
+        priority                                   = 1014
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "1886"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_445_Storage_OB"
+        description                                = null
+        priority                                   = 1015
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "445"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_5672_EH_OB"
+        description                                = null
+        priority                                   = 1016
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "5672"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+    ]
+  }
+}
+
+centralhub_prod_publicIps = {
+  publicIp1 = {
+    public_ip_name     = "eus-hub-central-prod-agw-pip-01"
+    allocation_method  = "Dynamic"
+    public_ip_sku      = "Basic"
+    public_ip_sku_tier = "Regional"
+  }
+}
+
+
+##########################################################################################################################################################################
+
+##########################################################################################################################################################################
+
+#Central Hub SIT Resource Group
+centralhub_sit_rg = "eus-hub-central-sit-rg"
+
+# Storage Accounts
+centralhub_sit_storageaccount = ["eushubstgacc4logs01"]
+centralhub_sit_containers_list = [
+  { name = "backup", access_type = "container" },
+  { name = "insights-logs-applicationgatewayaccesslog", access_type = "private" },
+  { name = "insights-logs-applicationgatewayfirewalllog", access_type = "private" },
+  { name = "insights-logs-applicationgatewayperformancelog", access_type = "private" },
+  { name = "insights-logs-gatewaydiagnosticlog", access_type = "private" },
+  { name = "insights-logs-gatewaylogs", access_type = "private" },
+  { name = "insights-logs-networksecuritygroupflowevent", access_type = "private" },
+  { name = "insights-logs-routediagnosticlog", access_type = "private" },
+  { name = "insights-logs-tunneldiagnosticlog", access_type = "private" },
+  { name = "insights-metrics-pt1m", access_type = "private" }
+]
+
+centralhub_sit_applicationinsightsname = "eus-hub-apim-sit-ai"
+
+centralhub_sit_applicationgateway_name = "eus-hub-central-sit-agw-01"
+
+centralhub_sit_servicebus_namespace_name = "eus-hub-central-nonprod-sit-sb-01"
+
+centralhub_sit_api_management_service_name = "eus-hub-central-nonprod-sit-apim-01"
+
+centralhub_sit_nsgs = {
+  nsg1 = {
+    nsg_name = "eus-s-hub-vm-01-nsg"
+
+    nsg_rules = [
+      {
+        name                                       = "Port_443_IB"
+        description                                = null
+        priority                                   = 100
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "443"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_80_IB"
+        description                                = null
+        priority                                   = 101
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "80"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_8080_IB"
+        description                                = null
+        priority                                   = 102
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "8080"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_65503to65534_IB"
+        description                                = null
+        priority                                   = 103
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "65503-65534"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_3443_APIEndPoint"
+        description                                = null
+        priority                                   = 104
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "3443"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_6381to6383_IB"
+        description                                = null
+        priority                                   = 105
+        direction                                  = "Inbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "6381-6383"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_443_OB"
+        description                                = null
+        priority                                   = 100
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "443"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_80_OB"
+        description                                = null
+        priority                                   = 101
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "80"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_8080_OB"
+        description                                = null
+        priority                                   = 102
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "8080"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_65503to65534_OB"
+        description                                = null
+        priority                                   = 103
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "65503-65534"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_25_OB"
+        description                                = null
+        priority                                   = 104
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "25"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_587_OB"
+        description                                = null
+        priority                                   = 105
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "587"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_25028"
+        description                                = null
+        priority                                   = 106
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "25028"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_6381to6383"
+        description                                = null
+        priority                                   = 107
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "6381-6383"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_1886_OB"
+        description                                = null
+        priority                                   = 108
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "1886"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_445_Storage_OB"
+        description                                = null
+        priority                                   = 109
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "445"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+      {
+        name                                       = "Port_5672_EH_OB"
+        description                                = null
+        priority                                   = 1010
+        direction                                  = "Outbound"
+        access                                     = "Allow"
+        protocol                                   = "*"
+        source_port_range                          = "*"
+        source_port_ranges                         = []
+        destination_port_range                     = "5672"
+        destination_port_ranges                    = []
+        source_address_prefix                      = "*"
+        source_address_prefixes                    = []
+        source_application_security_group_ids      = []
+        destination_address_prefix                 = "*"
+        destination_address_prefixes               = []
+        destination_application_security_group_ids = []
+      },
+    ]
+  }
+}
+
+centralhub_sit_publicIps = {
+  publicIp1 = {
+    public_ip_name     = "eus-hub-central-sit-agw-pip-01"
+    allocation_method  = "Dynamic"
+    public_ip_sku      = "Basic"
+    public_ip_sku_tier = "Regional"
+  }
+}
+
