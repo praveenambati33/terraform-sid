@@ -5,7 +5,7 @@
 
 #   depends_on                 = [module.CHub_vnet, module.CHub_subnet]
 #   for_each                   = var.vmss
-#   source                     = "./modules/VirtualMachineScaleSet"
+#   source                     = "../../modules/VirtualMachineScaleSet"
 #   location                   = var.location
 #   resourcegroupname          = var.centralhub_resourcegroupname
 #   subnet_resource_group_name = each.value["subnet_resource_group_name"]

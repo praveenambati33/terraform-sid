@@ -3,7 +3,7 @@
 #Resource Group
 module "CHub_ResourceGroup" {
 
-  source              = "./modules/ResourceGroup"
+  source              = "../../modules/ResourceGroup"
   resource_group_name = var.centralhub_resourcegroupname
   location            = var.location
   tags                = var.tags
@@ -14,7 +14,7 @@ module "CHub_ResourceGroup" {
 # module "CHub_KeyVault" {
 
 #   depends_on        = [module.CHub_ResourceGroup]
-#   source            = "./modules/KeyVault"
+#   source            = "../../modules/KeyVault"
 #   resourcegroupname = var.centralhub_resourcegroupname
 #   location          = var.location
 #   keyvaultname      = var.centralhub_keyvaultname
@@ -26,7 +26,7 @@ module "CHub_ResourceGroup" {
 
 #   depends_on          = [module.CHub_ResourceGroup]
 #   for_each            = var.vnets
-#   source              = "./modules/VirtualNetwork"
+#   source              = "../../modules/VirtualNetwork"
 #   location            = var.location
 #   resource_group_name = var.centralhub_resourcegroupname
 #   vnet_name           = each.value["vnet_name"]
@@ -40,7 +40,7 @@ module "CHub_ResourceGroup" {
 
 #   depends_on              = [module.CHub_vnet]
 #   for_each                = var.subnets
-#   source                  = "./modules/Subnet"
+#   source                  = "../../modules/Subnet"
 #   location                = var.location
 #   resource_group_name     = var.centralhub_resourcegroupname
 #   virtual_network_name    = var.vnet_name
@@ -62,7 +62,7 @@ module "CHub_nsg" {
 
   depends_on          = [module.CHub_ResourceGroup]
   for_each            = var.nsgs
-  source              = "./modules/NetworkSecurityGroup"
+  source              = "../../modules/NetworkSecurityGroup"
   location            = var.location
   resource_group_name = var.centralhub_resourcegroupname
   nsg_name            = each.value["nsg_name"]
@@ -77,7 +77,7 @@ module "CHub_nsg" {
 
 #   depends_on         = [module.CHub_ResourceGroup]
 #   for_each           = var.publicIps
-#   source             = "./modules/PublicIP"
+#   source             = "../../modules/PublicIP"
 #   resourcegroupname  = var.centralhub_resourcegroupname
 #   location           = var.location
 #   public_ip_name     = each.value["public_ip_name"]
@@ -148,7 +148,7 @@ module "CHub_nsg" {
 # module "LogAnalyticsWorkspace" {
 
 #   depends_on        = [module.CHub_ResourceGroup]
-#   source            = "./modules/LogAnalyticsWorkspace"
+#   source            = "../../modules/LogAnalyticsWorkspace"
 #   resourcegroupname = var.centralhub_resourcegroupname
 #   location          = var.location
 #   lawworkspacename  = var.lawworkspacename
@@ -186,7 +186,7 @@ module "CHub_nsg" {
 # module "CHub_StorageAccount01" {
 
 #   depends_on        = [module.CHub_ResourceGroup]
-#   source            = "./modules/StorageAccount"
+#   source            = "../../modules/StorageAccount"
 #   storage_list      = var.storageaccount_01
 #   containers_list   = var.containers_list01
 #   resourcegroupname = var.centralhub_resourcegroupname
@@ -198,7 +198,7 @@ module "CHub_nsg" {
 # module "CHub_StorageAccount02" {
 
 #   depends_on        = [module.CHub_ResourceGroup]
-#   source            = "./modules/StorageAccount"
+#   source            = "../../modules/StorageAccount"
 #   storage_list      = var.storageaccount_02
 #   containers_list   = var.containers_list02
 #   resourcegroupname = var.centralhub_resourcegroupname
@@ -451,7 +451,7 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_2" {
 # module "EventHub" {
 
 #   depends_on                 = [module.CHub_ResourceGroup]
-#   source                     = "./modules/EventHub"
+#   source                     = "../../modules/EventHub"
 #   resourcegroupname          = var.centralhub_resourcegroupname
 #   location                   = var.location
 #   eventhubs                  = var.eventhubs
@@ -471,7 +471,7 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_2" {
 #Resource Group
 module "virtualmachine_rg_ResourceGroup" {
 
-  source              = "./modules/ResourceGroup"
+  source              = "../../modules/ResourceGroup"
   resource_group_name = var.centralhub_virtualmachine_rg
   location            = var.location
   tags                = var.tags
@@ -483,7 +483,7 @@ module "virtualmachine_rg_nsg" {
 
   depends_on          = [module.virtualmachine_rg_ResourceGroup]
   for_each            = var.virtualmachine_rg_nsgs
-  source              = "./modules/NetworkSecurityGroup"
+  source              = "../../modules/NetworkSecurityGroup"
   location            = var.location
   resource_group_name = var.centralhub_virtualmachine_rg
   nsg_name            = each.value["nsg_name"]
@@ -502,7 +502,7 @@ module "virtualmachine_rg_nsg" {
 # #Resource Group
 # module "Centralhub_Prod_rg" {
 
-#   source            = "./modules/ResourceGroup"
+#   source            = "../../modules/ResourceGroup"
 #   resourcegroupname = var.centralhub_prod_rg
 #   location          = var.location
 #   tags              = var.tags
@@ -514,7 +514,7 @@ module "virtualmachine_rg_nsg" {
 
 #   depends_on        = [module.Centralhub_Prod_rg]
 #   for_each          = var.centralhub_prod_nsgs
-#   source            = "./modules/NetworkSecurityGroup"
+#   source            = "../../modules/NetworkSecurityGroup"
 #   location          = var.location
 #   resourcegroupname = var.centralhub_prod_rg
 #   nsg_name          = each.value["nsg_name"]
@@ -528,7 +528,7 @@ module "virtualmachine_rg_nsg" {
 # module "Centralhub_Prod_StorageAccount" {
 
 #   depends_on        = [module.Centralhub_Prod_rg]
-#   source            = "./modules/StorageAccount"
+#   source            = "../../modules/StorageAccount"
 #   storage_list      = var.centralhub_prod_storageaccount
 #   containers_list   = var.centralhub_prod_containers_list
 #   resourcegroupname = var.centralhub_prod_rg
@@ -542,7 +542,7 @@ module "virtualmachine_rg_nsg" {
 
 #   depends_on         = [module.Centralhub_Prod_rg]
 #   for_each           = var.centralhub_prod_publicIps
-#   source             = "./modules/PublicIP"
+#   source             = "../../modules/PublicIP"
 #   resourcegroupname  = var.centralhub_prod_rg
 #   location           = var.location
 #   public_ip_name     = each.value["public_ip_name"]
@@ -560,7 +560,7 @@ module "virtualmachine_rg_nsg" {
 #     module.Centralhub_Prod_rg,
 #     module.LogAnalyticsWorkspace
 #   ]
-#   source                  = "./modules/ApplicationInsights"
+#   source                  = "../../modules/ApplicationInsights"
 #   resourcegroupname       = var.centralhub_prod_rg
 #   location                = var.location
 #   applicationinsightsname = var.centralhub_prod_applicationinsightsname
@@ -814,7 +814,7 @@ module "virtualmachine_rg_nsg" {
 # #Resource Group
 # module "Centralhub_Sit_rg" {
 
-#   source            = "./modules/ResourceGroup"
+#   source            = "../../modules/ResourceGroup"
 #   resourcegroupname = var.centralhub_sit_rg
 #   location          = var.location
 #   tags              = var.tags
@@ -826,7 +826,7 @@ module "virtualmachine_rg_nsg" {
 
 #   depends_on        = [module.Centralhub_Sit_rg]
 #   for_each          = var.centralhub_sit_nsgs
-#   source            = "./modules/NetworkSecurityGroup"
+#   source            = "../../modules/NetworkSecurityGroup"
 #   location          = var.location
 #   resourcegroupname = var.centralhub_sit_rg
 #   nsg_name          = each.value["nsg_name"]
@@ -840,7 +840,7 @@ module "virtualmachine_rg_nsg" {
 # module "Centralhub_Sit_StorageAccount" {
 
 #   depends_on        = [module.Centralhub_Sit_rg]
-#   source            = "./modules/StorageAccount"
+#   source            = "../../modules/StorageAccount"
 #   storage_list      = var.centralhub_sit_storageaccount
 #   containers_list   = var.centralhub_sit_containers_list
 #   resourcegroupname = var.centralhub_sit_rg
@@ -854,7 +854,7 @@ module "virtualmachine_rg_nsg" {
 
 #   depends_on         = [module.Centralhub_Sit_rg]
 #   for_each           = var.centralhub_sit_publicIps
-#   source             = "./modules/PublicIP"
+#   source             = "../../modules/PublicIP"
 #   resourcegroupname  = var.centralhub_sit_rg
 #   location           = var.location
 #   public_ip_name     = each.value["public_ip_name"]
@@ -872,7 +872,7 @@ module "virtualmachine_rg_nsg" {
 #     module.Centralhub_Sit_rg,
 #     module.LogAnalyticsWorkspace
 #   ]
-#   source                  = "./modules/ApplicationInsights"
+#   source                  = "../../modules/ApplicationInsights"
 #   resourcegroupname       = var.centralhub_sit_rg
 #   location                = var.location
 #   applicationinsightsname = var.centralhub_sit_applicationinsightsname
