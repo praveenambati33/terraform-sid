@@ -4,7 +4,7 @@
 module "CHub_ResourceGroup" {
 
   source              = "../../modules/ResourceGroup"
-  resource_group_name = var.centralhub_resourcegroupname
+  resourcegroupname = var.centralhub_resourcegroupname
   location            = var.location
   tags                = var.tags
 
@@ -28,7 +28,7 @@ module "CHub_ResourceGroup" {
 #   for_each            = var.vnets
 #   source              = "../../modules/VirtualNetwork"
 #   location            = var.location
-#   resource_group_name = var.centralhub_resourcegroupname
+#   resourcegroupname = var.centralhub_resourcegroupname
 #   vnet_name           = each.value["vnet_name"]
 #   address_space       = each.value["vnet_address_space"]
 #   tags                = var.tags
@@ -42,7 +42,7 @@ module "CHub_ResourceGroup" {
 #   for_each                = var.subnets
 #   source                  = "../../modules/Subnet"
 #   location                = var.location
-#   resource_group_name     = var.centralhub_resourcegroupname
+#   resourcegroupname     = var.centralhub_resourcegroupname
 #   virtual_network_name    = var.vnet_name
 #   subnet_name             = each.value["subnet_name"]
 #   subnet_address_prefixes = each.value["subnet_address_prefixes"]
@@ -64,7 +64,7 @@ module "CHub_nsg" {
   for_each            = var.nsgs
   source              = "../../modules/NetworkSecurityGroup"
   location            = var.location
-  resource_group_name = var.centralhub_resourcegroupname
+  resourcegroupname = var.centralhub_resourcegroupname
   nsg_name            = each.value["nsg_name"]
   tags                = var.tags
 
@@ -165,7 +165,7 @@ module "CHub_nsg" {
 # }
 
 # #LAW Solution
-# resource "azurerm_log_analytics_solution" "example" {
+# resource "azurerm_log_analytics_solution" "LAW_solution" {
 
 #   depends_on            = [data.azurerm_log_analytics_workspace.LAW]
 #   solution_name         = var.law_solution_name
@@ -472,7 +472,7 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_2" {
 module "virtualmachine_rg_ResourceGroup" {
 
   source              = "../../modules/ResourceGroup"
-  resource_group_name = var.centralhub_virtualmachine_rg
+  resourcegroupname = var.centralhub_virtualmachine_rg
   location            = var.location
   tags                = var.tags
 
@@ -485,7 +485,7 @@ module "virtualmachine_rg_nsg" {
   for_each            = var.virtualmachine_rg_nsgs
   source              = "../../modules/NetworkSecurityGroup"
   location            = var.location
-  resource_group_name = var.centralhub_virtualmachine_rg
+  resourcegroupname = var.centralhub_virtualmachine_rg
   nsg_name            = each.value["nsg_name"]
   tags                = var.tags
 

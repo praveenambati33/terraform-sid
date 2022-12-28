@@ -8,7 +8,7 @@ variable "tags" {
   description = "Resource tags"
 }
 
-variable "resource_group_name" {
+variable "resourcegroupname" {
   type        = string
   description = "The name of the resource group"
 }
