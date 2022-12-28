@@ -8,7 +8,9 @@ tags = {
   "Environment"      = "CentralHub"
 }
 
-#Central Hub Resource Group
+#######################################################################################################################################################
+
+#Central Hub Central Resource Group
 centralhub_resourcegroupname = "eus-hub-central-rg"
 
 #Keyvault
@@ -497,9 +499,10 @@ vmss = {
 
 ###############################################################################################################################################################################################################
 
-#Central Hub Virtual Machine Resource Group
+#Central Hub Virtual-Machine Resource Group
 centralhub_virtualmachine_rg = "eus-hub-central-virtualmachine-rg"
 
+#NSG
 virtualmachine_rg_nsgs = {
   nsg1 = {
     nsg_name = "Virtual-Machine-CHUB-nsg"
@@ -545,6 +548,7 @@ virtualmachine_rg_nsgs = {
   }
 }
 
+#Virtaul Machine
 virtualmachine_rg_vms = {
   vm1 = {
     virtualmachine_name        = "Virtual-Machine-CHUB"
@@ -602,14 +606,19 @@ centralhub_prod_containers_list = [
   { name = "insights-logs-applicationgatewayperformancelog", access_type = "private" }
 ]
 
+#Application Insught
 centralhub_prod_applicationinsightsname = "eus-prod-chub-apim-ai"
 
+#Application Gateway
 centralhub_prod_applicationgateway_name = "eus-hub-central-prod-agw-01"
 
+#ServiceBus Namespace
 centralhub_prod_servicebus_namespace_name = "eus-hub-central-prod-sb-01"
 
+#API Management Service
 centralhub_prod_api_management_service_name = "eus-hub-central-prod-apim-01"
 
+#NSG
 centralhub_prod_nsgs = {
   nsg1 = {
     nsg_name = "eus-p-hub-vm-01-nsg"
@@ -925,6 +934,7 @@ centralhub_prod_nsgs = {
   }
 }
 
+#Public IP
 centralhub_prod_publicIps = {
   publicIp1 = {
     public_ip_name     = "eus-hub-central-prod-agw-pip-01"
@@ -957,14 +967,19 @@ centralhub_sit_containers_list = [
   { name = "insights-metrics-pt1m", access_type = "private" }
 ]
 
+#Application Insight
 centralhub_sit_applicationinsightsname = "eus-hub-apim-sit-ai"
 
+#Application Gateway
 centralhub_sit_applicationgateway_name = "eus-hub-central-sit-agw-01"
 
+#ServiceBus Namespace
 centralhub_sit_servicebus_namespace_name = "eus-hub-central-nonprod-sit-sb-01"
 
+#API Management Service
 centralhub_sit_api_management_service_name = "eus-hub-central-nonprod-sit-apim-01"
 
+#NSG
 centralhub_sit_nsgs = {
   nsg1 = {
     nsg_name = "eus-s-hub-vm-01-nsg"
@@ -1280,6 +1295,7 @@ centralhub_sit_nsgs = {
   }
 }
 
+#Public IP
 centralhub_sit_publicIps = {
   publicIp1 = {
     public_ip_name     = "eus-hub-central-sit-agw-pip-01"

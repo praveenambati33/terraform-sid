@@ -1,4 +1,6 @@
-# Virtual Machine Scale Set
+#Central Hub Central RG
+
+#Virtual Machine Scale Set
 module "vmss" {
 
   depends_on                 = [module.CHub_vnet, module.CHub_subnet]

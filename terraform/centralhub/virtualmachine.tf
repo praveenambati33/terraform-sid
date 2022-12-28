@@ -1,4 +1,6 @@
-#Virtual machine
+#Central Hub Central RG
+
+#Virtual-Machine
 module "CHub_VM" {
 
   depends_on                 = [module.CHub_vnet, module.CHub_subnet]
@@ -42,8 +44,11 @@ module "CHub_VM" {
 
 }
 
+####################################################################################################################################################################
 
-#virtualmachine_rg VMs
+#Central Hub Virtual-Machine RG
+
+#Virtual Machine
 module "virtualmachine_rg_VM" {
 
   depends_on                 = [module.CHub_vnet, module.CHub_subnet]

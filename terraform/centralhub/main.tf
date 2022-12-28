@@ -1,3 +1,5 @@
+#Central Hub Central RG Code
+
 #Resource Group
 module "CHub_ResourceGroup" {
 
@@ -464,6 +466,8 @@ module "EventHub" {
 
 ########################################################################################################################################################
 
+#Virtual Machine RG Code
+
 #Resource Group
 module "virtualmachine_rg_ResourceGroup" {
 
@@ -493,7 +497,9 @@ module "virtualmachine_rg_nsg" {
 
 #############################################################################################################################################################
 
-#Prod Resource Group
+#Central Hub Prod RG Code
+
+#Resource Group
 module "Centralhub_Prod_rg" {
 
   source            = "./modules/ResourceGroup"
@@ -803,7 +809,9 @@ resource "azurerm_application_gateway" "centralhub_prod_application_gateway" {
 
 ####################################################################################################################################################################
 
-#Sit Resource Group
+#Central Hub Sit RG Code
+
+#Resource Group
 module "Centralhub_Sit_rg" {
 
   source            = "./modules/ResourceGroup"
