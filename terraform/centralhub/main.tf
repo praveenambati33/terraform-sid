@@ -694,7 +694,8 @@ resource "azurerm_application_gateway" "centralhub_prod_application_gateway" {
     public_ip_address_id = data.azurerm_public_ip.centralhub_prod_application_gateway_publicIp.id
   }
 
-  http_listener { #<<--- Need Cert for HTTPS listeners. Need to provide all the details for cert.
+#NOTE: Need to provide Cert for "HTTPS" listeners. Need to provide all the details for cert.
+  http_listener {
     name                           = "apigw-p-listener"
     frontend_ip_configuration_name = "appGwPublicFrontendIp"
     frontend_port_name             = "port_443"
@@ -931,7 +932,7 @@ resource "azurerm_servicebus_namespace_network_rule_set" "centralhub_sit_service
   namespace_id                  = azurerm_servicebus_namespace.centralhub_sit_servicebus_namespace.id
   default_action                = "Deny"
   public_network_access_enabled = true
-  ip_rules                      = ["155.49.0.0/16", "165.225.38.0/23", "165.225.8.0/23", "165.225.39.69", "165.225.209.38", "98.144.181.36", "192.181.104.8", "73.154.208.164", "24.1.4.228", "155.49.211.21", "172.19.94.224", "155.49.202.42", "165.225.221.43", "165.225.123.34", "172.29.4.164", "52.146.56.211", "172.29.4.128/25", "172.29.4.0/25", "52.146.56.211", "165.225.220.123", "155.49.28.114", "155.49.28.115", "155.49.211.82", "155.49.149.63", "155.49.203.134", "136.226.75.101", "136.226.75.115", "155.49.148.56" ]
+  ip_rules                      = ["155.49.0.0/16", "165.225.38.0/23", "165.225.8.0/23", "165.225.39.69", "165.225.209.38", "98.144.181.36", "192.181.104.8", "73.154.208.164", "24.1.4.228", "155.49.211.21", "172.19.94.224", "155.49.202.42", "165.225.221.43", "165.225.123.34", "172.29.4.164", "52.146.56.211", "172.29.4.128/25", "172.29.4.0/25", "52.146.56.211", "165.225.220.123", "155.49.28.114", "155.49.28.115", "155.49.211.82", "155.49.149.63", "155.49.203.134", "136.226.75.101", "136.226.75.115", "155.49.148.56"]
 
 }
 
@@ -952,7 +953,7 @@ resource "azurerm_api_management" "centralhub_sit_api_management_service" {
 data "azurerm_subnet" "centralhub_sit_application_gateway_subnet" {
 
   depends_on           = [module.CHub_subnet]
-  name                 = "eus-prod-snet-agw-01"
+  name                 = "eus-nonprod-sit-snet-agw-01"
   virtual_network_name = "eus-hub-central-vnet-01"
   resource_group_name  = var.centralhub_resourcegroupname
 
@@ -961,7 +962,7 @@ data "azurerm_subnet" "centralhub_sit_application_gateway_subnet" {
 data "azurerm_public_ip" "centralhub_sit_application_gateway_publicIp" {
 
   depends_on          = [module.Centralhub_Sit_PublicIP]
-  name                = "eus-hub-central-prod-agw-pip-01"
+  name                = "eus_hub_central_sit_agw_pip_01"
   resource_group_name = var.centralhub_sit_rg
 
 }
@@ -986,131 +987,59 @@ resource "azurerm_application_gateway" "centralhub_sit_application_gateway" {
   }
 
   gateway_ip_configuration {
-    name      = "appGatewayIpConfig"
+    name      = "gatewayIP01"
     subnet_id = data.azurerm_subnet.centralhub_sit_application_gateway_subnet.id
   }
 
   frontend_port {
-    name = "port_443"
+    name = "port01"
     port = 443
-  }
-  frontend_port {
-    name = "port_8083"
-    port = 8083
-  }
-  frontend_port {
-    name = "port_8084"
-    port = 8084
-  }
-  frontend_port {
-    name = "port_80"
-    port = 80
   }
 
   frontend_ip_configuration {
-    name                 = "appGwPublicFrontendIp"
+    name                 = "frontend1"
     public_ip_address_id = data.azurerm_public_ip.centralhub_sit_application_gateway_publicIp.id
   }
 
-  http_listener { #<<--- Need Cert for HTTPS listeners. Need to provide all the details for cert.
-    name                           = "apigw-p-listener"
-    frontend_ip_configuration_name = "appGwPublicFrontendIp"
-    frontend_port_name             = "port_443"
+#NOTE: Need to provide Cert for "HTTPS" listeners. Need to provide all the details for cert.
+  http_listener { 
+    name                           = "apigw-s-listener"
+    frontend_ip_configuration_name = "frontend1"
+    frontend_port_name             = "port01"
     protocol                       = "Https"
-    host_name                      = "apigw.harvardpilgrim.org"
-    ssl_certificate_name           = "appgwcertprod_pfx"
-  }
-  http_listener {
-    name                           = "digitalicon-p-listener"
-    frontend_ip_configuration_name = "appGwPublicFrontendIp"
-    frontend_port_name             = "port_443"
-    protocol                       = "Https"
-    host_name                      = "icons.point32health.org"
-    ssl_certificate_name           = "icons.point32health.org-pfx"
-  }
-  http_listener {
-    name                           = "digitalicon-p-http-listner"
-    frontend_ip_configuration_name = "appGwPublicFrontendIp"
-    frontend_port_name             = "port_80"
-    protocol                       = "Http"
-    host_name                      = "icons.point32health.org"
+    host_name                      = "apigw-s.harvardpilgrim.org"
+    ssl_certificate_name           = "cert-sit"
   }
 
   backend_address_pool {
     name         = "apimbackend"
-    ip_addresses = ["172.30.254.117"]
-  }
-  backend_address_pool {
-    name         = "digital-icon-prod-vm"
-    ip_addresses = ["172.29.167.196"]
+    ip_addresses = ["172.30.253.101"]
   }
 
   backend_http_settings {
-    name                  = "apimsetting"
+    name                  = "apimPoolSetting"
     cookie_based_affinity = "Disabled"
-    affinity_cookie_name  = "ApplicationGatewayAffinity"
     port                  = 443
     protocol              = "Https"
     request_timeout       = 180
     host_name             = "apigw.harvardpilgrim.org"
-    probe_name            = "apimprobe"
-  }
-  backend_http_settings {
-    name                  = "digital-icon-httpsetting"
-    cookie_based_affinity = "Disabled"
-    affinity_cookie_name  = "ApplicationGatewayAffinity"
-    port                  = 443
-    protocol              = "Https"
-    request_timeout       = 60
-    host_name             = "icons.point32health.org"
-    probe_name            = "digitalicon-probe"
-  }
-
-  redirect_configuration {
-    name                 = "digitalicon-p-http-rule"
-    redirect_type        = "Permanent"
-    target_listener_name = "digitalicon-p-listener"
-    include_path         = true
-    include_query_string = true
+    probe_name            = "apimproxyprobe"
   }
 
   request_routing_rule {
-    name                       = "apigw-p-rule"
-    rule_type                  = "PathBasedRouting"
-    http_listener_name         = "apigw-p-listener"
-    backend_http_settings_name = "apimsetting"
-  }
-  request_routing_rule {
-    name                        = "digitalicon-p-http-rule"
-    rule_type                   = "Basic"
-    http_listener_name          = "digitalicon-p-http-listner"
-    redirect_configuration_name = "digitalicon-p-http-rule"
-  }
-  request_routing_rule {
-    name                       = "digital-p-https-rule"
-    rule_type                  = "Basic"
-    http_listener_name         = "digitalicon-p-listener"
-    backend_address_pool_name  = "digital-icon-prod-vm"
-    backend_http_settings_name = "digital-icon-httpsetting"
+    name               = "apigw-s-rule"
+    rule_type          = "PathBasedRouting"
+    http_listener_name = "apigw-s-listener"
   }
 
   probe {
-    name                = "apimprobe"
+    name                = "apimproxyprobe"
     protocol            = "Https"
-    host                = "apigw.harvardpilgrim.org"
+    host                = "apigw-s.harvardpilgrim.org"
     path                = "/status-0123456789abcdef"
     interval            = 30
     timeout             = 120
     unhealthy_threshold = 8
-  }
-  probe {
-    name                = "digitalicon-probe"
-    protocol            = "Https"
-    host                = "icons.point32health.org"
-    path                = "/status-0123456789abcdef"
-    interval            = 30
-    timeout             = 120
-    unhealthy_threshold = 3
   }
 
 }
