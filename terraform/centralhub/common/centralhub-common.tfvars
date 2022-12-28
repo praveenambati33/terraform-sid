@@ -11,7 +11,7 @@ tags = {
 #######################################################################################################################################################
 
 #Central Hub Central Resource Group
-centralhub_resourcegroupname = "eus-hub-central-rg"
+centralhub_resourcegroupname = "eus-hub-central-UAT-rg" #"eus-hub-central-rg"
 
 #Keyvault
 centralhub_keyvaultname = "eus-hub-kv"
@@ -165,7 +165,7 @@ subnets = {
 #Chub NSGs
 nsgs = {
   nsg1 = {
-    nsg_name = "basicNsgeus-hub-central-vnet-01-nic01"
+    nsg_name = "basicNsgeus-hub-central-UAT-vnet-01-nic01" #"basicNsgeus-hub-central-vnet-01-nic01"
 
     nsg_rules = [
       {
@@ -243,134 +243,134 @@ nsgs = {
     ]
   },
 
-  nsg2 = {
-    nsg_name = "eus-hub-snet-vmss-p-nsg"
+  # nsg2 = {
+  #   nsg_name = "eus-hub-snet-vmss-p-nsg"
 
-    nsg_rules = [
-      {
-        name                                       = "Port_SSH"
-        description                                = null
-        priority                                   = 100
-        direction                                  = "Inbound"
-        access                                     = "Allow"
-        protocol                                   = "Tcp"
-        source_port_range                          = "*"
-        source_port_ranges                         = []
-        destination_port_range                     = "22"
-        destination_port_ranges                    = []
-        source_address_prefix                      = "172.30.0.0/27"
-        source_address_prefixes                    = []
-        source_application_security_group_ids      = []
-        destination_address_prefix                 = "*"
-        destination_address_prefixes               = []
-        destination_application_security_group_ids = []
-      },
-      {
-        name                                       = "Port_DNS"
-        description                                = null
-        priority                                   = 110
-        direction                                  = "Inbound"
-        access                                     = "Allow"
-        protocol                                   = "Tcp"
-        source_port_range                          = "*"
-        source_port_ranges                         = []
-        destination_port_range                     = "53"
-        destination_port_ranges                    = []
-        source_address_prefix                      = "172.30.240.5"
-        source_address_prefixes                    = []
-        source_application_security_group_ids      = []
-        destination_address_prefix                 = "*"
-        destination_address_prefixes               = []
-        destination_application_security_group_ids = []
-      },
-      {
-        name                                       = "Port_80"
-        description                                = null
-        priority                                   = 120
-        direction                                  = "Inbound"
-        access                                     = "Allow"
-        protocol                                   = "*"
-        source_port_range                          = "*"
-        source_port_ranges                         = []
-        destination_port_range                     = "80"
-        destination_port_ranges                    = []
-        source_address_prefix                      = "*"
-        source_address_prefixes                    = []
-        source_application_security_group_ids      = []
-        destination_address_prefix                 = "*"
-        destination_address_prefixes               = []
-        destination_application_security_group_ids = []
-      }
-    ]
-  },
+  #   nsg_rules = [
+  #     {
+  #       name                                       = "Port_SSH"
+  #       description                                = null
+  #       priority                                   = 100
+  #       direction                                  = "Inbound"
+  #       access                                     = "Allow"
+  #       protocol                                   = "Tcp"
+  #       source_port_range                          = "*"
+  #       source_port_ranges                         = []
+  #       destination_port_range                     = "22"
+  #       destination_port_ranges                    = []
+  #       source_address_prefix                      = "172.30.0.0/27"
+  #       source_address_prefixes                    = []
+  #       source_application_security_group_ids      = []
+  #       destination_address_prefix                 = "*"
+  #       destination_address_prefixes               = []
+  #       destination_application_security_group_ids = []
+  #     },
+  #     {
+  #       name                                       = "Port_DNS"
+  #       description                                = null
+  #       priority                                   = 110
+  #       direction                                  = "Inbound"
+  #       access                                     = "Allow"
+  #       protocol                                   = "Tcp"
+  #       source_port_range                          = "*"
+  #       source_port_ranges                         = []
+  #       destination_port_range                     = "53"
+  #       destination_port_ranges                    = []
+  #       source_address_prefix                      = "172.30.240.5"
+  #       source_address_prefixes                    = []
+  #       source_application_security_group_ids      = []
+  #       destination_address_prefix                 = "*"
+  #       destination_address_prefixes               = []
+  #       destination_application_security_group_ids = []
+  #     },
+  #     {
+  #       name                                       = "Port_80"
+  #       description                                = null
+  #       priority                                   = 120
+  #       direction                                  = "Inbound"
+  #       access                                     = "Allow"
+  #       protocol                                   = "*"
+  #       source_port_range                          = "*"
+  #       source_port_ranges                         = []
+  #       destination_port_range                     = "80"
+  #       destination_port_ranges                    = []
+  #       source_address_prefix                      = "*"
+  #       source_address_prefixes                    = []
+  #       source_application_security_group_ids      = []
+  #       destination_address_prefix                 = "*"
+  #       destination_address_prefixes               = []
+  #       destination_application_security_group_ids = []
+  #     }
+  #   ]
+  # },
 
-  nsg3 = {
-    nsg_name = "eus-hub-vm-01-nsg"
+  # nsg3 = {
+  #   nsg_name = "eus-hub-vm-01-nsg"
 
-    nsg_rules = [
-      {
-        name                                       = "AllowSpoke"
-        description                                = null
-        priority                                   = 100
-        direction                                  = "Inbound"
-        access                                     = "Allow"
-        protocol                                   = "*"
-        source_port_range                          = "*"
-        source_port_ranges                         = []
-        destination_port_range                     = "*"
-        destination_port_ranges                    = []
-        source_address_prefix                      = "172.29.4.32/28"
-        source_address_prefixes                    = []
-        source_application_security_group_ids      = []
-        destination_address_prefix                 = "*"
-        destination_address_prefixes               = []
-        destination_application_security_group_ids = []
-      },
-      {
-        name                                       = "Allowspoke_1"
-        description                                = null
-        priority                                   = 100
-        direction                                  = "Outbound"
-        access                                     = "Allow"
-        protocol                                   = "*"
-        source_port_range                          = "*"
-        source_port_ranges                         = []
-        destination_port_range                     = "*"
-        destination_port_ranges                    = []
-        source_address_prefix                      = "*"
-        source_address_prefixes                    = []
-        source_application_security_group_ids      = []
-        destination_address_prefix                 = "172.29.4.32/28"
-        destination_address_prefixes               = []
-        destination_application_security_group_ids = []
-      }
-    ]
-  },
+  #   nsg_rules = [
+  #     {
+  #       name                                       = "AllowSpoke"
+  #       description                                = null
+  #       priority                                   = 100
+  #       direction                                  = "Inbound"
+  #       access                                     = "Allow"
+  #       protocol                                   = "*"
+  #       source_port_range                          = "*"
+  #       source_port_ranges                         = []
+  #       destination_port_range                     = "*"
+  #       destination_port_ranges                    = []
+  #       source_address_prefix                      = "172.29.4.32/28"
+  #       source_address_prefixes                    = []
+  #       source_application_security_group_ids      = []
+  #       destination_address_prefix                 = "*"
+  #       destination_address_prefixes               = []
+  #       destination_application_security_group_ids = []
+  #     },
+  #     {
+  #       name                                       = "Allowspoke_1"
+  #       description                                = null
+  #       priority                                   = 100
+  #       direction                                  = "Outbound"
+  #       access                                     = "Allow"
+  #       protocol                                   = "*"
+  #       source_port_range                          = "*"
+  #       source_port_ranges                         = []
+  #       destination_port_range                     = "*"
+  #       destination_port_ranges                    = []
+  #       source_address_prefix                      = "*"
+  #       source_address_prefixes                    = []
+  #       source_application_security_group_ids      = []
+  #       destination_address_prefix                 = "172.29.4.32/28"
+  #       destination_address_prefixes               = []
+  #       destination_application_security_group_ids = []
+  #     }
+  #   ]
+  # },
 
-  nsg4 = {
-    nsg_name = "teradata-debug-vm-nsg"
+  # nsg4 = {
+  #   nsg_name = "teradata-debug-vm-nsg"
 
-    nsg_rules = [
-      {
-        name                                       = "SSH"
-        description                                = null
-        priority                                   = 300
-        direction                                  = "Inbound"
-        access                                     = "Allow"
-        protocol                                   = "Tcp"
-        source_port_range                          = "*"
-        source_port_ranges                         = []
-        destination_port_range                     = "22"
-        destination_port_ranges                    = []
-        source_address_prefix                      = "*"
-        source_address_prefixes                    = []
-        source_application_security_group_ids      = []
-        destination_address_prefix                 = "*"
-        destination_address_prefixes               = []
-        destination_application_security_group_ids = []
-      },
-    ]
-  }
+  #   nsg_rules = [
+  #     {
+  #       name                                       = "SSH"
+  #       description                                = null
+  #       priority                                   = 300
+  #       direction                                  = "Inbound"
+  #       access                                     = "Allow"
+  #       protocol                                   = "Tcp"
+  #       source_port_range                          = "*"
+  #       source_port_ranges                         = []
+  #       destination_port_range                     = "22"
+  #       destination_port_ranges                    = []
+  #       source_address_prefix                      = "*"
+  #       source_address_prefixes                    = []
+  #       source_application_security_group_ids      = []
+  #       destination_address_prefix                 = "*"
+  #       destination_address_prefixes               = []
+  #       destination_application_security_group_ids = []
+  #     },
+  #   ]
+  # }
 }
 
 #Virtual Machine
@@ -500,12 +500,12 @@ vmss = {
 ###############################################################################################################################################################################################################
 
 #Central Hub Virtual-Machine Resource Group
-centralhub_virtualmachine_rg = "eus-hub-central-virtualmachine-rg"
+centralhub_virtualmachine_rg = "eus-hub-central-UAT-virtualmachine-rg" #"eus-hub-central-virtualmachine-rg"
 
 #NSG
 virtualmachine_rg_nsgs = {
   nsg1 = {
-    nsg_name = "Virtual-Machine-CHUB-nsg"
+    nsg_name = "Virtual-Machine-CHUB-UAT-nsg" #"Virtual-Machine-CHUB-nsg"
 
     nsg_rules = [
       {
