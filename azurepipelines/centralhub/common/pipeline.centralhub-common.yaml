@@ -5,7 +5,6 @@ variables:
 
 trigger: none
 
-# Don't run against PRs
 pr: none
 
 stages :
@@ -35,7 +34,7 @@ stages :
                 displayName: 'install'
                 inputs:
                   terraformVersion: ${{ variables.terraformVersion }}
-              - task: TerraformTaskV2@2 #TerraformTaskV1@0
+              - task: TerraformTaskV2@2
                 displayName: 'init'
                 inputs:
                   provider: 'azurerm'
@@ -66,7 +65,7 @@ stages :
                 displayName: 'install'
                 inputs:
                   terraformVersion: ${{ variables.terraformVersion }}
-              - task: TerraformTaskV2@2 #TerraformTaskV1@0
+              - task: TerraformTaskV2@2
                 displayName: 'init'
                 inputs:
                   provider: 'azurerm'
@@ -95,7 +94,7 @@ stages :
                 displayName: 'install'
                 inputs:
                   terraformVersion: ${{ variables.terraformVersion }}
-              - task: TerraformTaskV2@2  #TerraformTaskV1@0
+              - task: TerraformTaskV2@2
                 displayName: 'init'
                 inputs:
                   provider: 'azurerm'
