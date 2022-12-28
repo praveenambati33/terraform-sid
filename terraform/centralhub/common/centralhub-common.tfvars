@@ -500,7 +500,7 @@ vmss = {
 ###############################################################################################################################################################################################################
 
 #Central Hub Virtual-Machine Resource Group
-centralhub_virtualmachine_rg = "eus-hub-central-UAT-virtualmachine-rg" #"eus-hub-central-virtualmachine-rg"
+centralhub_virtualmachine_rg = "eus-hub-central-virtualmachine-rg"
 
 #NSG
 virtualmachine_rg_nsgs = {

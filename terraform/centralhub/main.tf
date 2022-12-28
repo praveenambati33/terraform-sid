@@ -469,29 +469,29 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_2" {
 #Virtual Machine RG Code
 
 #Resource Group
-module "virtualmachine_rg_ResourceGroup" {
+# module "virtualmachine_rg_ResourceGroup" {
 
-  source              = "../../modules/ResourceGroup"
-  resourcegroupname = var.centralhub_virtualmachine_rg
-  location            = var.location
-  tags                = var.tags
+#   source              = "../../modules/ResourceGroup"
+#   resourcegroupname = var.centralhub_virtualmachine_rg
+#   location            = var.location
+#   tags                = var.tags
 
-}
+# }
 
-#virtualmachine_rg NSG
-module "virtualmachine_rg_nsg" {
+# #virtualmachine_rg NSG
+# module "virtualmachine_rg_nsg" {
 
-  depends_on          = [module.virtualmachine_rg_ResourceGroup]
-  for_each            = var.virtualmachine_rg_nsgs
-  source              = "../../modules/NetworkSecurityGroup"
-  location            = var.location
-  resourcegroupname = var.centralhub_virtualmachine_rg
-  nsg_name            = each.value["nsg_name"]
-  tags                = var.tags
+#   depends_on          = [module.virtualmachine_rg_ResourceGroup]
+#   for_each            = var.virtualmachine_rg_nsgs
+#   source              = "../../modules/NetworkSecurityGroup"
+#   location            = var.location
+#   resourcegroupname = var.centralhub_virtualmachine_rg
+#   nsg_name            = each.value["nsg_name"]
+#   tags                = var.tags
 
-  nsg_rules = lookup(each.value, "nsg_rules", [])
+#   nsg_rules = lookup(each.value, "nsg_rules", [])
 
-}
+# }
 
 #############################################################################################################################################################
 
