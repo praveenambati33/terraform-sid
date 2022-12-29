@@ -34,6 +34,11 @@ stages :
                 displayName: 'install'
                 inputs:
                   terraformVersion: ${{ variables.terraformVersion }}
+              - script: |
+                  git config --global url."https://$SYSTEM_ACCESSTOKEN@dev.azure.com".insteadOf "https://Org-SAMS@dev.azure.com"
+                displayName: 'set extra header'
+                env:
+                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
               - task: TerraformTaskV2@2
                 displayName: 'init'
                 inputs:
