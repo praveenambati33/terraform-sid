@@ -45,6 +45,9 @@ virtual_network_gateway_connection_name = "eus-hub-central-s2s-connection-01"
 #Bastion
 bastion_name = "eus-hub-central-vnet-01-bastion"
 
+#Load Balancer name
+lb_name = "eus-hub-centraldns-ilb01"
+
 #Event Hub Namespace and Event Hubs
 eventhub_namespace_name = "eus-hub-central-eventhub01"
 

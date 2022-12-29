@@ -462,6 +462,150 @@ module "EventHub" {
 
 }
 
+#Load Balancer
+data "azurerm_subnet" "lb_subnet" {
+
+  depends_on           = [module.CHub_subnet]
+  name                 = "eus-hub-snet-compute-p-01"
+  virtual_network_name = "eus-hub-central-vnet-01"
+  resource_group_name  = var.centralhub_resourcegroupname
+
+}
+
+resource "azurerm_lb" "lb" {
+
+  depends_on = [
+    module.CHub_ResourceGroup,
+    data.azurerm_subnet.lb_subnet
+  ]
+  name                = var.lb_name
+  location            = var.location
+  resource_group_name = var.centralhub_resourcegroupname
+
+  sku      = "Standard"
+  sku_tier = "Regional"
+  tags     = var.tags
+
+
+  frontend_ip_configuration {
+    name                          = "LoadBalancerFrontEnd"
+    subnet_id                     = data.azurerm_subnet.lb_subnet.id
+    private_ip_address            = "172.30.240.5"
+    private_ip_address_allocation = "Dynamic"
+    private_ip_address_version    = "IPv4"
+  }
+
+}
+
+resource "azurerm_lb_backend_address_pool" "lb_backend_address_pool" {
+
+  depends_on      = [azurerm_lb.lb]
+  loadbalancer_id = azurerm_lb.lb.id
+  name            = "vmscalesetbackendpool01"
+
+}
+
+resource "azurerm_lb_probe" "lb_probe_01" {
+  depends_on      = [azurerm_lb.lb]
+  loadbalancer_id = azurerm_lb.lb.id
+  name            = "DNS"
+  port            = 53
+  protocol        = "Tcp"
+}
+
+resource "azurerm_lb_probe" "lb_probe_02" {
+  depends_on      = [azurerm_lb.lb]
+  loadbalancer_id = azurerm_lb.lb.id
+  name            = "http"
+  port            = 80
+  protocol        = "Tcp"
+}
+
+resource "azurerm_lb_probe" "lb_probe_03" {
+  depends_on      = [azurerm_lb.lb]
+  loadbalancer_id = azurerm_lb.lb.id
+  name            = "https"
+  port            = 443
+  protocol        = "Https"
+  request_path    = "/"
+}
+
+resource "azurerm_lb_probe" "lb_probe_04" {
+  depends_on      = [azurerm_lb.lb]
+  loadbalancer_id = azurerm_lb.lb.id
+  name            = "webmin"
+  port            = 10000
+  protocol        = "Tcp"
+}
+
+resource "azurerm_lb_rule" "lb_rule_01" {
+
+  depends_on = [
+    azurerm_lb_backend_address_pool.lb_backend_address_pool,
+    azurerm_lb_probe.lb_probe_01
+  ]
+  loadbalancer_id                = azurerm_lb.lb.id
+  name                           = "LB1"
+  protocol                       = "Tcp"
+  frontend_port                  = 53
+  backend_port                   = 53
+  frontend_ip_configuration_name = "LoadBalancerFrontEnd"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lb_backend_address_pool.id]
+  probe_id                       = azurerm_lb_probe.lb_probe_01.id
+
+}
+
+resource "azurerm_lb_rule" "lb_rule_02" {
+
+  depends_on = [
+    azurerm_lb_backend_address_pool.lb_backend_address_pool,
+    azurerm_lb_probe.lb_probe_01
+  ]
+  loadbalancer_id                = azurerm_lb.lb.id
+  name                           = "LB2"
+  protocol                       = "Udp"
+  frontend_port                  = 53
+  backend_port                   = 53
+  frontend_ip_configuration_name = "LoadBalancerFrontEnd"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lb_backend_address_pool.id]
+  probe_id                       = azurerm_lb_probe.lb_probe_01.id
+
+}
+
+resource "azurerm_lb_rule" "lb_rule_03" {
+
+  depends_on = [
+    azurerm_lb_backend_address_pool.lb_backend_address_pool,
+    azurerm_lb_probe.lb_probe_02
+  ]
+  loadbalancer_id                = azurerm_lb.lb.id
+  name                           = "LB3"
+  protocol                       = "Tcp"
+  frontend_port                  = 80
+  backend_port                   = 80
+  frontend_ip_configuration_name = "LoadBalancerFrontEnd"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lb_backend_address_pool.id]
+  probe_id                       = azurerm_lb_probe.lb_probe_02.id
+
+}
+
+resource "azurerm_lb_rule" "lb_rule_04" {
+
+  depends_on = [
+    azurerm_lb_backend_address_pool.lb_backend_address_pool,
+    azurerm_lb_probe.lb_probe_04
+  ]
+  loadbalancer_id                = azurerm_lb.lb.id
+  name                           = "LB4"
+  protocol                       = "Tcp"
+  frontend_port                  = 10000
+  backend_port                   = 10000
+  frontend_ip_configuration_name = "LoadBalancerFrontEnd"
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.lb_backend_address_pool.id]
+  probe_id                       = azurerm_lb_probe.lb_probe_04.id
+
+}
+
 ########################################################################################################################################################
 
 ########################################################################################################################################################
