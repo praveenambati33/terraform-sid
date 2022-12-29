@@ -3,6 +3,12 @@ name: $(BuildDefinitionName)_$(date:yyyyMMdd)$(rev:.r)
 variables:
   - template: variables.yaml
 
+resources:
+  repositories: 
+    - repository: modules
+      type: git
+      name: modules
+
 trigger: none
 
 pr: none
