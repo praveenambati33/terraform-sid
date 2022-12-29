@@ -2,7 +2,8 @@ variables:
 
 #Application variables
   - name: Application
-    value: 'centralhub'
+    # value: 'centralhub'                     #<-- Actual value
+    value: 'centralhub2'                      #<-- TEST value
   - name: Environment
     value: 'common'
 
@@ -16,7 +17,8 @@ variables:
   - name: backendAzureRmStorageAccountName    # <<-- Storage Account name to tfstate file
     value: 'eusdevopsstgacc01'
   - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already on azure portal created before running pipeline.
-    value: 'centralhub-common'
+    # value: 'centralhub-common'                #<-- Actual value
+    value: 'centralhub2-common'               #<-- TEST value
 
 
 #Environment configuration variables
