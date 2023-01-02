@@ -10,6 +10,7 @@ pr: none
 
 stages :
   - stage: validate
+    displayName: Validate for ${{ variables.Application }} - ${{ variables.Environment }} environment
     jobs:
     - job: validate
       continueOnError: false
@@ -25,6 +26,7 @@ stages :
           command: 'validate'
           
   - stage: plan
+    displayName: Plan for ${{ variables.Application }} - ${{ variables.Environment }} environment
     dependsOn: [validate]
     condition: succeeded('validate')
     jobs:
@@ -35,7 +37,7 @@ stages :
                 displayName: 'install'
                 inputs:
                   terraformVersion: ${{ variables.terraformVersion }}
-              - task: TerraformTaskV2@2 #TerraformTaskV1@0
+              - task: TerraformTaskV2@2
                 displayName: 'init'
                 inputs:
                   provider: 'azurerm'
@@ -56,27 +58,23 @@ stages :
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
 
   - stage: apply
+    displayName: Apply for ${{ variables.Application }} - ${{ variables.Environment }} environment
     dependsOn: [plan]
     condition: succeeded('plan')
     jobs:
-      - job: doSomething
-        displayName:  Do Something
-        steps:
-        - script: echo hello!!
-          displayName: 'run a oneline script'
       - job: waitForValidation
-        displayName: wait for external validtion
-        dependsOn: doSomething
+        displayName: Please validate terraform plan and approve the request for ${{ variables.Environment }} environment
         pool: server
-        timeoutInMinutes: 4312
+        timeoutInMinutes: 300 # job times out in 5 hours
         steps:
           - task: ManualValidation@0
-            timeoutInMinutes: 1440      
+            timeoutInMinutes: 180  # job times out in 3 hours
             inputs:
-              notifyUsers: 'praveen.ambati@nttdata.com'
-              instructions: 'Make this is tested in test environment first'
+              notifyUsers: 'Praveen.Ambati@point32health.org'
+              instructions: 'Terraform apply stage will provision the resources which might impact the infrastructure, as a approver please review `terraform plan` and compare your real infrastructure against your configuration (terrraform code)'
               onTimeout: resume
       - job: terraform_apply
+        dependsOn: waitForValidation
         steps:
               - checkout: self
               - task: TerraformInstaller@0
@@ -103,7 +101,19 @@ stages :
                   environmentServiceNameAzureRM: ${{ variables.environmentServiceNameAzureRM }}
                   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/${{ variables.Application }}'
   - stage: destroy
+    displayName: Destroy for ${{ variables.Application }} - ${{ variables.Environment }} environment
     jobs:
+      - job: waitForValidation
+        displayName: Please validate terraform plan and approve the request for ${{ variables.Environment }} environment
+        pool: server
+        timeoutInMinutes: 300 # job times out in 5 hours
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 180  # job times out in 3 hours
+            inputs:
+              notifyUsers: 'Praveen.Ambati@point32health.org'
+              instructions: 'Terraform apply stage will provision the resources which might impact the infrastructure, as a approver please review `terraform plan` and compare your real infrastructure against your configuration (terrraform code)'
+              onTimeout: resume
       - job: terraform_destroy
         steps:
               - checkout: self
