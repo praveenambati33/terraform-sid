@@ -1,6 +1,7 @@
 module "ResourceGroup" {
 
   source            = "../../modules/ResourceGroup"
+  # source            ="github.com/modules/resourcegroup/v1.0.0/"
   resourcegroupname = var.resourcegroupname
   location          = var.location
   tags              = var.tags

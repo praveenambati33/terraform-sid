@@ -24,7 +24,7 @@ variable "node_sku" {
 }
 
 variable "nodestorageaccountname" {
-  type        = string
+  type        = list
   description = "location for the  iwallet resources"
 }
 
@@ -65,6 +65,10 @@ variable "node_function_app_application_settings"{
   type = map
 }
 
+variable "fn_containers_list"{
+  type = list
+}
+
 
 # Java Function App
 
@@ -84,7 +88,7 @@ variable "java_sku" {
 }
 
 variable "javastorageaccountname" {
-  type        = string
+  type        = list
   description = "location for the  iwallet resources"
 }
 
@@ -158,7 +162,7 @@ variable "iwalletasg" {
 
 #Storage Account
 variable "storageaccountname" {
-  type = string
+  type = list
 }
 
 variable "nodecontainerlist" {
@@ -166,6 +170,10 @@ variable "nodecontainerlist" {
 }
 
 #Event Hub 
+
+variable "containers_list"{
+  type = list
+}
 
 variable "eventhubstorageaccountname" {
   type = string

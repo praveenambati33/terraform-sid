@@ -127,7 +127,10 @@ module "HPHC_ApplicationServicePlan" {
 
 module "NetworkSecurityGroup" {
 
-  depends_on        = [module.ResourceGroup]
+  depends_on        = [
+    module.ResourceGroup
+  ]
+
   for_each          = var.nsgs
   source            = "./modules/NetworkSecurityGroup"
   location          = var.location
@@ -142,10 +145,10 @@ module "NetworkSecurityGroup" {
 
 module "WindowsVirtualMachine" {
 
-  depends_on = [
-    module.VirtualNetwork,
-    module.Subnet
+  depends_on        = [
+    module.ResourceGroup
   ]
+
   for_each                   = var.vms
   source                     = "./modules/WindowsVirtualMachine"
   location                   = var.location

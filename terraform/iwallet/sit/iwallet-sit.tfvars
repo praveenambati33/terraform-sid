@@ -1,5 +1,5 @@
 #Resource Group
-resourcegroupname = "eus-sit2-iwallet-rg-02"
+resourcegroupname = "eus-sit3-iwallet-rg-02"
 location          = "eastus"
 
 
@@ -9,8 +9,9 @@ applicationinsightsname = "eus-sit2-iwallet-ai"
 nodeserviceplanname    = "eus-sit2-iwallet-js-sp-01"
 node_ostype             = "Windows"
 node_sku                = "Y1"
-nodestorageaccountname = "eussit2fnappjs01stgacc"
-nodefunctionappname    = "eus-sit2-iwallet-js-01"
+nodestorageaccountname = ["eussit2fnappjs09stgacc"]
+fn_containers_list = []
+nodefunctionappname    = "eus-sit2-iwallet-js-02"
 node_stack_version     = { node = "~14" }
 nodersvname            = "eus-sit2-iwallet-fnapp-js-rsv-01"
 nodersvfspolicyname    = "eus-sit2-iwallet-js-rsv"
@@ -21,10 +22,10 @@ node_function_app_application_settings = {
 
 # Java Function App
 
-javaserviceplanname    = "eus-sit2-iwallet-java-sp-01"
+javaserviceplanname    = "eus-sit2-iwallet-java-sp-02"
 java_ostype             = "Windows"
 java_sku                = "Y1"
-javastorageaccountname = "eussit2fnappjava01stgacc"
+javastorageaccountname = ["eussit2fnappjava09stgacc"]
 javafunctionappname    = "eus-sit2-iwallet-java-01"
 java_stack_version     =  { java= "8" }
 javarsvname            = "eus-sit2-iwallet-fnapp-java-rsv-01"
@@ -44,7 +45,7 @@ iwalletcosmosdbcontainer2 = "walletCollection"
 walletpartitionkey        = "/doctype"
 
 # KeyVault
-appkeyvaultname = "eus-sit2-iwallet-kv-01"
+appkeyvaultname = "eus-sit3-iwallet-kv-01"
 cosmoskeyvaultname = "eus-sit2-kv-cosmosdb-01"
 
 # DataFactory
@@ -53,7 +54,7 @@ iwalletdfname = "eus-sit2-iwallet-asg"
 
 #Event Hub Namespace and Event Hubs
 
-eventhubstorageaccountname = "eussit2walletslogssa01"
+eventhubstorageaccountname = "eussit2walletslogssa99"
 
 eventhubcontainers_list = [
   { name = "eus-sit2-iwallet-logs-bkp", access_type = "private" },
@@ -103,7 +104,7 @@ eventhubs = {
 iwalletasg = "eus-sit2-iwallet-asg"
 
 # Storage Account for Cosomo DB Backup 
-storageaccountname = "eussit2stgacc01backup"
+storageaccountname = ["eussit2stgacc01backup"]
 
 javacontainerlist = [
   { name = "iwalletlogs", access_type = "private" }
