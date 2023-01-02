@@ -1,9 +1,11 @@
-#Virtual machine
+#Central Hub Central RG
+
+#Virtual-Machine
 module "CHub_VM" {
 
   depends_on                 = [module.CHub_vnet, module.CHub_subnet]
   for_each                   = var.vms
-  source                     = "./modules/VirtualMachine"
+  source                     = "../../modules/VirtualMachine"
   location                   = var.location
   resourcegroupname          = var.centralhub_resourcegroupname
   subnet_resource_group_name = each.value["subnet_resource_group_name"]
@@ -42,13 +44,16 @@ module "CHub_VM" {
 
 }
 
+####################################################################################################################################################################
 
-#virtualmachine_rg VMs
+#Central Hub Virtual-Machine RG
+
+#Virtual Machine
 module "virtualmachine_rg_VM" {
 
   depends_on                 = [module.CHub_vnet, module.CHub_subnet]
   for_each                   = var.virtualmachine_rg_vms
-  source                     = "./modules/WindowsVirtualMachine"
+  source                     = "../../modules/WindowsVirtualMachine"
   location                   = var.location
   resourcegroupname          = var.centralhub_virtualmachine_rg
   subnet_resource_group_name = each.value["subnet_resource_group_name"]
