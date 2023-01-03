@@ -90,23 +90,23 @@ variable "app_settings"{
 
 
 #Networking and VM
-variable "vnets" {
-  type = map(object({
-    vnet_name = string
-    vnet_address_space = list(string)
-  }))
-  description = "For each vnet, create an object that contain fields"
-}
+# variable "vnets" {
+#   type = map(object({
+#     vnet_name = string
+#     vnet_address_space = list(string)
+#   }))
+#   description = "For each vnet, create an object that contain fields"
+# }
 
 variable "subnets" {
   description = "For each subnet, create an object that contain fields"
   default     = {}
 }
 
-variable "vnet_name" {
-  type = string
-  description = "Virtual network name for Subnet module"
-}
+# variable "vnet_name" {
+#   type = string
+#   description = "Virtual network name for Subnet module"
+# }
 
 variable "nsgs" {
   type = map(object({
