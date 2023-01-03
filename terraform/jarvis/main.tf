@@ -186,3 +186,8 @@ module "WindowsVirtualMachine" {
   delete_data_disks_on_termination = lookup(each.value, "delete_data_disks_on_termination", false)
 
 }
+
+data "azurerm_virtual_network" "sit-vnet" {
+  name                = "eus-s-vnet"
+  resource_group_name = "spoke-rg"
+}

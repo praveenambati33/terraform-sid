@@ -42,7 +42,7 @@ app_settings = {
 #NSG
 nsgs = {
   nsg1 = {
-    nsg_name = "eus-s-jarvis-vm-nsg"
+    nsg_name = "eus-perf-jarvis-vm-nsg"
 
     nsg_rules = [
       {
@@ -71,14 +71,14 @@ nsgs = {
 # Virtual Machine
 vms = {
   vm1 = {
-    virtualmachine_name        = "eus-s-jarvis-vm"
+    virtualmachine_name        = "eus-perf-jarvis-vm"
     vm_size                    = "Standard_D4s_v3"
     vm_vnet_name               = "eus-s-vnet"
-    vm_subnet_name             = "eus-jarvisvm-snet"
-    subnet_resource_group_name = "eus-s-network-rg"
+    vm_subnet_name             = "virtual-machine"
+    subnet_resource_group_name = "spoke-rg"
 
     #NIC
-    vm_nic_name                   = "eus-s-jarvis-vm774"
+    vm_nic_name                   = "eus-perf-jarvis-vm774"
     ip_config_name                = "ipconfig1"
     private_ip_address_allocation = "Dynamic"
 
@@ -89,7 +89,7 @@ vms = {
     image_version   = "latest"
 
     #OSDisk
-    osdisk_name     = "eus-s-jarvis-vm_disk1"
+    osdisk_name     = "eus-perf-jarvis-vm_disk1"
     osdisk_caching  = "ReadWrite"
     osdisk_type     = "Standard_LRS"
     os_disk_size_gb = "127"
@@ -102,7 +102,7 @@ vms = {
     delete_data_disks_on_termination = true #default it is "false"
 
     #osprofile
-    computer_name  = "eus-s-jarvis-vm"
+    computer_name  = "eus-perf-jarvis-vm"
     admin_usename  = "chatbotadmin"
     admin_password = "admin@123"
   }
