@@ -132,7 +132,7 @@ module "NetworkSecurityGroup" {
   ]
 
   for_each          = var.nsgs
-  source            = "./modules/NetworkSecurityGroup"
+  source            = "../../modules/NetworkSecurityGroup"
   location          = var.location
   resourcegroupname = var.resourcegroupname
   nsg_name          = each.value["nsg_name"]
@@ -150,7 +150,7 @@ module "WindowsVirtualMachine" {
   ]
 
   for_each                   = var.vms
-  source                     = "./modules/WindowsVirtualMachine"
+  source                     = "../../modules/WindowsVirtualMachine"
   location                   = var.location
   resourcegroupname          = var.resourcegroupname
   subnet_resource_group_name = each.value["subnet_resource_group_name"]
