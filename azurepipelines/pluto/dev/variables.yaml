@@ -1,0 +1,19 @@
+variables:
+
+#Application variables
+  - name: Application
+    value: 'pluto'
+  - name: Environment
+    value: 'dev'
+
+#Backend Configuration variables
+  - name: terraformVersion                    # <<-- Terraform version
+    value: '1.2.0'
+  - name: backendServiceArm                   # <<-- Backend Service Connection Name, where tfstates will get store
+    value: 'YOUR_SC_NAME'
+  - name: backendAzureRmResourceGroupName     # <<-- Resource Group name to store tfstate file
+    value: 'YOUR_DEVOPS_TERRAFORM_RG_NAME'
+  - name: backendAzureRmStorageAccountName    # <<-- Storage Account name to tfstate file
+    value: 'YOUR_STORAGE_ACOUNT'
+  - name: backendAzureRmContainerName         # <<-- Container name to tfstate file. This should be already on azure portal created before running pipeline.
+    value: 'STATE_BLOB_NAME'
